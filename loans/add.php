@@ -282,15 +282,36 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="form-grid mb-4">
                 <div class="form-group">
                     <label>Customer Photo</label>
-                    <input type="file" name="customer_photo" accept="image/*" capture="user">
+                    <input type="file" name="customer_photo" id="customer_photo" accept="image/*" style="display:none">
+                    <input type="file" id="customer_photo_cam" accept="image/*" capture="user" style="display:none" onchange="photoFromCam('customer_photo',this)">
+                    <div class="flex gap-2 mb-2">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('customer_photo_cam').click()">&#128247; Camera</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('customer_photo').click()">&#128444; Gallery</button>
+                    </div>
+                    <img id="preview_customer_photo" style="display:none; max-height:80px; border-radius:6px; border:1px solid var(--border);">
+                    <span id="label_customer_photo" class="text-muted" style="font-size:12px;">No file chosen</span>
                 </div>
                 <div class="form-group">
                     <label>Aadhaar Card (Front)</label>
-                    <input type="file" name="aadhaar_photo" accept="image/*" capture="environment">
+                    <input type="file" name="aadhaar_photo" id="aadhaar_photo" accept="image/*" style="display:none">
+                    <input type="file" id="aadhaar_photo_cam" accept="image/*" capture="environment" style="display:none" onchange="photoFromCam('aadhaar_photo',this)">
+                    <div class="flex gap-2 mb-2">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('aadhaar_photo_cam').click()">&#128247; Camera</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('aadhaar_photo').click()">&#128444; Gallery</button>
+                    </div>
+                    <img id="preview_aadhaar_photo" style="display:none; max-height:80px; border-radius:6px; border:1px solid var(--border);">
+                    <span id="label_aadhaar_photo" class="text-muted" style="font-size:12px;">No file chosen</span>
                 </div>
                 <div class="form-group">
                     <label>Aadhaar Card (Back)</label>
-                    <input type="file" name="aadhaar_back_photo" accept="image/*" capture="environment">
+                    <input type="file" name="aadhaar_back_photo" id="aadhaar_back_photo" accept="image/*" style="display:none">
+                    <input type="file" id="aadhaar_back_photo_cam" accept="image/*" capture="environment" style="display:none" onchange="photoFromCam('aadhaar_back_photo',this)">
+                    <div class="flex gap-2 mb-2">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('aadhaar_back_photo_cam').click()">&#128247; Camera</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('aadhaar_back_photo').click()">&#128444; Gallery</button>
+                    </div>
+                    <img id="preview_aadhaar_back_photo" style="display:none; max-height:80px; border-radius:6px; border:1px solid var(--border);">
+                    <span id="label_aadhaar_back_photo" class="text-muted" style="font-size:12px;">No file chosen</span>
                 </div>
             </div>
 
@@ -315,6 +336,44 @@ function calc() {
     let emi = (months > 0) ? rem / months : 0;
     document.getElementById('emi_calc').value = '₹ ' + emi.toFixed(2);
 }
+
+// Photo handling and preview
+function photoFromCam(targetId, camInput) {
+    if (camInput.files && camInput.files[0]) {
+        const targetInput = document.getElementById(targetId);
+        // Create a new FileList containing the camera photo
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(camInput.files[0]);
+        targetInput.files = dataTransfer.files;
+        
+        // Trigger change to show preview
+        showPreview(targetInput);
+    }
+}
+
+function showPreview(input) {
+    const id = input.id.replace('_cam', '');
+    const preview = document.getElementById('preview_' + id);
+    const label = document.getElementById('label_' + id);
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            label.textContent = input.files[0].name;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+        if (!this.id.endsWith('_cam')) {
+            showPreview(this);
+        }
+    });
+});
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
