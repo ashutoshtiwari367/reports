@@ -281,15 +281,15 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="form-grid mb-4">
                 <div class="form-group">
                     <label>Customer Photo</label>
-                    <input type="file" name="customer_photo" accept="image/*">
+                    <input type="file" name="customer_photo" accept="image/*" capture="user">
                 </div>
                 <div class="form-group">
                     <label>Aadhaar Card (Front)</label>
-                    <input type="file" name="aadhaar_photo" accept="image/*">
+                    <input type="file" name="aadhaar_photo" accept="image/*" capture="environment">
                 </div>
                 <div class="form-group">
                     <label>Aadhaar Card (Back)</label>
-                    <input type="file" name="aadhaar_back_photo" accept="image/*">
+                    <input type="file" name="aadhaar_back_photo" accept="image/*" capture="environment">
                 </div>
             </div>
 

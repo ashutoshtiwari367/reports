@@ -37,6 +37,10 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
             Print Invoice
         </a>
         <a href="index.php" class="btn btn-outline">Back to Loans</a>
+        <?php if(isSuperAdmin()): ?>
+            <a href="edit.php?id=<?= $l['loan_id'] ?>" class="btn btn-primary" style="background:var(--accent);">Edit</a>
+            <a href="delete.php?id=<?= $l['loan_id'] ?>" onclick="return confirm('Are you sure you want to completely delete this loan and all its EMIs? This cannot be undone.')" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger);">Delete</a>
+        <?php endif; ?>
     </div>
 </div>
 

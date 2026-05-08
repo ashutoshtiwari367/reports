@@ -58,8 +58,11 @@ $loans = $pdo->query("
                     </td>
                     <td><?= $l['emi_months'] ?> mo × <?= formatINR($l['emi_amount']) ?></td>
                     <td><?= statusBadge($l['status']) ?></td>
-                    <td class="text-right">
-                        <a href="view.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline">View Schedule</a>
+                    <td class="text-right flex gap-2" style="justify-content: flex-end;">
+                        <a href="view.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline">View</a>
+                        <?php if(isSuperAdmin()): ?>
+                            <a href="edit.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline" style="border-color:var(--accent); color:var(--accent);">Edit</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
