@@ -44,11 +44,13 @@ $shops = $pdo->query("SELECT id, name FROM shops WHERE is_active = 1 ORDER BY na
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="mb-6 flex items-center gap-4">
-    <a href="/users/index.php" class="btn btn-outline">← Back</a>
-    <div>
-        <h1 class="page-title">Create New User</h1>
-        <p class="page-subtitle">Create a Super Admin or assign an account to a Shop</p>
+<div class="page-header">
+    <div class="flex gap-4">
+        <a href="/users/index.php" class="btn btn-outline">← Back</a>
+        <div>
+            <h1 class="page-title">Create New User</h1>
+            <p class="page-subtitle">Create a Super Admin or assign an account to a Shop</p>
+        </div>
     </div>
 </div>
 

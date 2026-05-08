@@ -77,14 +77,23 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="card">
+<div class="card" style="margin-top: 32px;">
     <div class="card-header">
-        <h3 class="card-title">Shop Dues Today (<?= count($dueToday) ?>)</h3>
+        <h3 class="card-title">All Shop Loans</h3>
     </div>
     <div class="table-wrapper">
-        <?php if(empty($dueToday)): ?>
+        <?php
+        $allLoans = $pdo->query("
+            SELECT l.*, c.name as customer_name, c.phone 
+            FROM loans l 
+            JOIN customers c ON l.customer_id = c.id 
+            WHERE l.shop_id = $id 
+            ORDER BY l.created_at DESC
+        ")->fetchAll();
+        
+        if(empty($allLoans)): ?>
             <div class="empty-state">
-                <p>No EMIs due today for this shop.</p>
+                <p>No loans found for this shop.</p>
             </div>
         <?php else: ?>
             <table>
@@ -92,22 +101,33 @@ require_once __DIR__ . '/../includes/header.php';
                     <tr>
                         <th>Loan #</th>
                         <th>Customer</th>
-                        <th>Phone</th>
-                        <th>Amount</th>
+                        <th>Item / Model</th>
+                        <th>Price</th>
+                        <th>Months</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th class="text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($dueToday as $emi): ?>
+                    <?php foreach($allLoans as $loan): ?>
                     <tr>
-                        <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
-                        <td><?= htmlspecialchars($emi['customer_name']) ?></td>
-                        <td><?= htmlspecialchars($emi['phone']) ?></td>
-                        <td class="text-bold"><?= formatINR($emi['emi_amount']) ?></td>
-                        <td><?= statusBadge($emi['status']) ?></td>
+                        <td><strong><a href="/loans/view.php?id=<?= $loan['id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($loan['loan_number']) ?></a></strong></td>
                         <td>
-                            <button class="btn btn-sm btn-success" onclick="openPaymentModal(<?= $emi['id'] ?>, <?= $emi['emi_amount'] - $emi['paid_amount'] ?>)">Mark Paid</button>
+                            <?= htmlspecialchars($loan['customer_name']) ?><br>
+                            <small class="text-muted"><?= htmlspecialchars($loan['phone']) ?></small>
+                        </td>
+                        <td>
+                            <?= htmlspecialchars($loan['item_name']) ?><br>
+                            <small class="text-muted"><?= htmlspecialchars($loan['model_detail']) ?></small>
+                        </td>
+                        <td>
+                            <?= formatINR($loan['total_price']) ?><br>
+                            <small class="text-muted">Bal: <?= formatINR($loan['remaining_amount']) ?></small>
+                        </td>
+                        <td><?= $loan['emi_months'] ?> mo × <?= formatINR($loan['emi_amount']) ?></td>
+                        <td><?= statusBadge($loan['status']) ?></td>
+                        <td class="text-right">
+                            <a href="/loans/view.php?id=<?= $loan['id'] ?>" class="btn btn-sm btn-outline">View</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
