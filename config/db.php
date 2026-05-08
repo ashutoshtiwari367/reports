@@ -2,9 +2,9 @@
 // Check if running on localhost
 if (in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1', '::1'])) {
     define('DB_HOST', 'localhost');
-    define('DB_NAME', 'emi_tracker');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
+    define('DB_NAME', 'u447123054_reports');
+    define('DB_USER', 'u447123054_reports');
+    define('DB_PASS', 'u447123054_Reports');
 } else {
     // LIVE SERVER CREDENTIALS (HOSTINGER)
     // Please update these with the database details you created in Hostinger
