@@ -22,7 +22,7 @@ $stats = [
     'total_emi'        => $pdo->query("SELECT COALESCE(SUM(e.emi_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE 1=1 $shopJoinFilter")->fetchColumn(),
     'total_pending'    => $pdo->query("SELECT COALESCE(SUM(e.emi_amount - e.paid_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE e.status IN ('due','partial','overdue') $shopJoinFilter")->fetchColumn(),
     'closed_loans'     => $pdo->query("SELECT COUNT(*) FROM loans WHERE status='closed' $shopFilter")->fetchColumn(),
-    'total_profit'     => $pdo->query("SELECT COALESCE(SUM(interest_amount * emi_months),0) FROM loans WHERE 1=1 $shopFilter")->fetchColumn(),
+    'total_profit'     => $pdo->query("SELECT COALESCE(SUM(interest_amount),0) FROM loans WHERE 1=1 $shopFilter")->fetchColumn(),
 ];
 
 // Recent EMIs Due Today

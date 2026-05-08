@@ -36,9 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $interestAmount = (float)$_POST['interest_amount'];
     $months = (int)$_POST['emi_months'];
     
-    // Recalculate New Liability (interest is per month)
-    $totalInterest = $interestAmount * $months;
-    $newTotalLiability = ($price - $down) + $totalInterest;
+    // Recalculate New Liability
+    $newTotalLiability = ($price - $down) + $interestAmount;
     
     // Remaining balance to be paid
     $newRemainingBalance = $newTotalLiability - $totalPaid;
@@ -155,7 +154,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="number" step="0.01" name="down_payment" id="down_payment" required value="<?= $loan['down_payment'] ?>" oninput="calc()">
                 </div>
                 <div class="form-group">
-                    <label>Interest Amount (Per Month) (₹)</label>
+                    <label>Total Interest Amount (₹)</label>
                     <input type="number" step="0.01" name="interest_amount" id="interest_amount" required value="<?= $loan['interest_amount'] ?>" oninput="calc()">
                 </div>
                 <div class="form-group">
@@ -180,9 +179,8 @@ function calc() {
     let price = parseFloat(document.getElementById('total_price').value) || 0;
     let down = parseFloat(document.getElementById('down_payment').value) || 0;
     let interest = parseFloat(document.getElementById('interest_amount').value) || 0;
-    let months = parseInt(document.getElementById('months').value) || 1;
     
-    let rem = (price - down) + (interest * months);
+    let rem = (price - down) + interest;
     if(rem < 0) rem = 0;
     document.getElementById('remaining').value = rem.toFixed(2);
 }
