@@ -50,7 +50,7 @@ $due = $pdo->query("
                 <?php foreach($due as $emi): ?>
                 <tr>
                     <td><?= htmlspecialchars($emi['shop_name']) ?></td>
-                    <td><strong><a href="/emi/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
+                    <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
                     <td><?= htmlspecialchars($emi['customer_name']) ?></td>
                     <td><?= htmlspecialchars($emi['phone']) ?></td>
                     <td class="text-bold text-danger"><?= formatINR($emi['emi_amount'] - $emi['paid_amount']) ?></td>
@@ -73,3 +73,4 @@ $due = $pdo->query("
 <?php include __DIR__ . '/../emis/payment_modal.php'; ?>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

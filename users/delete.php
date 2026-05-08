@@ -5,7 +5,7 @@ global $pdo;
 
 if (!isSuperAdmin()) {
     setFlash('error', 'Access Denied.');
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -15,7 +15,7 @@ $user = currentUser();
 // Prevent self-deletion
 if ($id == $user['id']) {
     setFlash('error', 'You cannot delete your own account.');
-    header('Location: /emi/users/index.php');
+    header('Location: /users/index.php');
     exit;
 }
 
@@ -25,5 +25,6 @@ if ($id > 0) {
     setFlash('success', 'User deleted successfully.');
 }
 
-header('Location: /emi/users/index.php');
+header('Location: /users/index.php');
 exit;
+

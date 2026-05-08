@@ -5,7 +5,7 @@ global $pdo;
 
 if (!isSuperAdmin()) {
     setFlash('error', 'Access Denied.');
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ $u = $stmt->fetch();
 
 if (!$u) {
     setFlash('error', 'User not found.');
-    header('Location: /emi/users/index.php');
+    header('Location: /users/index.php');
     exit;
 }
 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upd  = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
             $upd->execute([$hash, $id]);
             setFlash('success', 'Password updated successfully for ' . htmlspecialchars($u['name']) . '.');
-            header('Location: /emi/users/index.php');
+            header('Location: /users/index.php');
             exit;
         } else {
             $error = 'Passwords do not match!';
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="mb-6 flex items-center gap-4">
-    <a href="/emi/users/index.php" class="btn btn-outline">← Back</a>
+    <a href="/users/index.php" class="btn btn-outline">← Back</a>
     <div>
         <h1 class="page-title">Change Password: <?= htmlspecialchars($u['name']) ?></h1>
         <p class="page-subtitle">Set a new secure password for this user</p>
@@ -74,10 +74,11 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="mt-4 flex gap-3">
                 <button type="submit" class="btn btn-primary">Change Password</button>
-                <a href="/emi/users/index.php" class="btn btn-ghost">Cancel</a>
+                <a href="/users/index.php" class="btn btn-ghost">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

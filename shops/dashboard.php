@@ -42,7 +42,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="page-subtitle"><?= htmlspecialchars($shop['city']) ?> • <?= htmlspecialchars($shop['owner_name']) ?></p>
     </div>
     <div class="flex gap-3">
-        <a href="/emi/loans/add.php?shop_id=<?= $shop['id'] ?>" class="btn btn-primary">New Sale</a>
+        <a href="/loans/add.php?shop_id=<?= $shop['id'] ?>" class="btn btn-primary">New Sale</a>
         <a href="index.php" class="btn btn-outline">Back to Shops</a>
     </div>
 </div>
@@ -101,7 +101,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <tbody>
                     <?php foreach($dueToday as $emi): ?>
                     <tr>
-                        <td><strong><a href="/emi/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
+                        <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
                         <td><?= htmlspecialchars($emi['customer_name']) ?></td>
                         <td><?= htmlspecialchars($emi['phone']) ?></td>
                         <td class="text-bold"><?= formatINR($emi['emi_amount']) ?></td>
@@ -119,3 +119,4 @@ require_once __DIR__ . '/../includes/header.php';
 
 <?php include __DIR__ . '/../emis/payment_modal.php'; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

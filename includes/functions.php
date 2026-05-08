@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 function requireLogin(): void {
     if (session_status() === PHP_SESSION_NONE) session_start();
     if (empty($_SESSION['user_id'])) {
-        header('Location: /emi/auth/login.php');
+        header('Location: /auth/login.php');
         exit;
     }
 }
@@ -188,3 +188,4 @@ function verifyCsrf(): void {
         die('Invalid CSRF token.');
     }
 }
+

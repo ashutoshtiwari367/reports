@@ -96,8 +96,8 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                 <div style="flex:1; text-align:center;">
                     <label style="display:block; margin-bottom:8px;">Customer Photo</label>
                     <?php if($l['customer_photo']): ?>
-                        <a href="/emi/<?= $l['customer_photo'] ?>" target="_blank">
-                            <img src="/emi/<?= $l['customer_photo'] ?>" style="width:100%; max-height:100px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">
+                        <a href="/<?= $l['customer_photo'] ?>" target="_blank">
+                            <img src="/<?= $l['customer_photo'] ?>" style="width:100%; max-height:100px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">
                         </a>
                     <?php else: ?>
                         <div style="height:100px; background:var(--surface2); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-light); font-size:11px;">No Photo</div>
@@ -108,16 +108,16 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                 <div style="flex:1; text-align:center;">
                     <label style="display:block; margin-bottom:4px; font-size:11px;">Aadhaar (Front)</label>
                     <?php if($l['aadhaar_photo']): ?>
-                        <a href="/emi/<?= $l['aadhaar_photo'] ?>" target="_blank">
-                            <img src="/emi/<?= $l['aadhaar_photo'] ?>" style="width:100%; max-height:80px; object-fit:cover; border-radius:6px; border:1px solid var(--border);">
+                        <a href="/<?= $l['aadhaar_photo'] ?>" target="_blank">
+                            <img src="/<?= $l['aadhaar_photo'] ?>" style="width:100%; max-height:80px; object-fit:cover; border-radius:6px; border:1px solid var(--border);">
                         </a>
                     <?php endif; ?>
                 </div>
                 <div style="flex:1; text-align:center;">
                     <label style="display:block; margin-bottom:4px; font-size:11px;">Aadhaar (Back)</label>
                     <?php if($l['aadhaar_back_photo']): ?>
-                        <a href="/emi/<?= $l['aadhaar_back_photo'] ?>" target="_blank">
-                            <img src="/emi/<?= $l['aadhaar_back_photo'] ?>" style="width:100%; max-height:80px; object-fit:cover; border-radius:6px; border:1px solid var(--border);">
+                        <a href="/<?= $l['aadhaar_back_photo'] ?>" target="_blank">
+                            <img src="/<?= $l['aadhaar_back_photo'] ?>" style="width:100%; max-height:80px; object-fit:cover; border-radius:6px; border:1px solid var(--border);">
                         </a>
                     <?php endif; ?>
                 </div>
@@ -218,4 +218,5 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
 
 <?php include __DIR__ . '/../emis/payment_modal.php'; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
 

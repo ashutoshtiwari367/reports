@@ -1,3 +1,4 @@
 <?php
-header('Location: /emi/auth/login.php');
+header('Location: /auth/login.php');
 exit;
+

@@ -54,7 +54,7 @@ $overdue = $pdo->query("
                 <tr>
                     <td><?= date('d M, Y', strtotime($emi['due_date'])) ?></td>
                     <td><span class="badge badge-overdue"><?= $emi['days_late'] ?> Days</span></td>
-                    <td><strong><a href="/emi/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
+                    <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
                     <td><?= htmlspecialchars($emi['customer_name']) ?></td>
                     <td><?= htmlspecialchars($emi['phone']) ?></td>
                     <td class="text-bold text-danger"><?= formatINR($emi['emi_amount'] - $emi['paid_amount']) ?></td>
@@ -76,3 +76,4 @@ $overdue = $pdo->query("
 <?php include __DIR__ . '/../emis/payment_modal.php'; ?>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

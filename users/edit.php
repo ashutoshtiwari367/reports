@@ -5,7 +5,7 @@ global $pdo;
 
 if (!isSuperAdmin()) {
     setFlash('error', 'Access Denied.');
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ $u = $stmt->fetch();
 
 if (!$u) {
     setFlash('error', 'User not found.');
-    header('Location: /emi/users/index.php');
+    header('Location: /users/index.php');
     exit;
 }
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upd  = $pdo->prepare("UPDATE users SET name = ?, email = ?, role = ?, shop_id = ? WHERE id = ?");
             $upd->execute([$name, $email, $role, $shop_id, $id]);
             setFlash('success', 'User updated successfully.');
-            header('Location: /emi/users/index.php');
+            header('Location: /users/index.php');
             exit;
         }
     } else {
@@ -51,7 +51,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="mb-6 flex items-center gap-4">
-    <a href="/emi/users/index.php" class="btn btn-outline">← Back</a>
+    <a href="/users/index.php" class="btn btn-outline">← Back</a>
     <div>
         <h1 class="page-title">Edit User: <?= htmlspecialchars($u['name']) ?></h1>
         <p class="page-subtitle">Update account details or re-assign to a shop</p>
@@ -91,10 +91,11 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="mt-4 flex gap-3">
                 <button type="submit" class="btn btn-primary">Update User</button>
-                <a href="/emi/users/index.php" class="btn btn-ghost">Cancel</a>
+                <a href="/users/index.php" class="btn btn-ghost">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

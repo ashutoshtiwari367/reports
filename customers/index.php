@@ -58,7 +58,7 @@ $customers = $pdo->query("
                     <td><?= $c['total_loans'] ?></td>
                     <td class="text-right">
                         <a href="view.php?id=<?= $c['id'] ?>" class="btn btn-sm btn-outline">Profile</a>
-                        <a href="/emi/loans/add.php?customer_id=<?= $c['id'] ?>" class="btn btn-sm btn-success">New Loan</a>
+                        <a href="/loans/add.php?customer_id=<?= $c['id'] ?>" class="btn btn-sm btn-success">New Loan</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -68,3 +68,4 @@ $customers = $pdo->query("
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

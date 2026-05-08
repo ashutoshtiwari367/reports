@@ -43,7 +43,7 @@ $dueToday = $pdo->query("
         <p class="page-subtitle">Welcome back, <?= htmlspecialchars($user['name'] ?? 'Admin') ?>. Here's a summary of your EMI business.</p>
     </div>
     <div class="flex gap-3">
-        <a href="/emi/loans/add.php" class="btn btn-primary">
+        <a href="/loans/add.php" class="btn btn-primary">
             <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Sale / Loan
         </a>
@@ -115,7 +115,7 @@ $dueToday = $pdo->query("
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Due Today (<?= count($dueToday) ?>)</h3>
-        <a href="/emi/reports/today_due.php" class="btn btn-sm btn-ghost">View Full Report</a>
+        <a href="/reports/today_due.php" class="btn btn-sm btn-ghost">View Full Report</a>
     </div>
     <div class="table-wrapper">
         <?php if(empty($dueToday)): ?>
@@ -140,7 +140,7 @@ $dueToday = $pdo->query("
                 <tbody>
                     <?php foreach($dueToday as $emi): ?>
                     <tr>
-                        <td><strong><a href="/emi/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
+                        <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
                         <td><?= htmlspecialchars($emi['customer_name']) ?></td>
                         <td><?= htmlspecialchars($emi['phone']) ?></td>
                         <td>#<?= $emi['installment_number'] ?></td>
@@ -166,4 +166,5 @@ $dueToday = $pdo->query("
 <?php include __DIR__ . '/emis/payment_modal.php'; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
 

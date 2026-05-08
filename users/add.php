@@ -6,7 +6,7 @@ global $pdo;
 
 if (!isSuperAdmin()) {
     setFlash('error', 'Access Denied.');
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ins  = $pdo->prepare("INSERT INTO users (name, email, password, role, shop_id) VALUES (?, ?, ?, ?, ?)");
             $ins->execute([$name, $email, $hash, $role, $shop_id]);
             setFlash('success', 'User account created successfully.');
-            header('Location: /emi/users/index.php');
+            header('Location: /users/index.php');
             exit;
         }
     } else {
@@ -45,7 +45,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="mb-6 flex items-center gap-4">
-    <a href="/emi/users/index.php" class="btn btn-outline">← Back</a>
+    <a href="/users/index.php" class="btn btn-outline">← Back</a>
     <div>
         <h1 class="page-title">Create New User</h1>
         <p class="page-subtitle">Create a Super Admin or assign an account to a Shop</p>
@@ -91,10 +91,11 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="mt-4 flex gap-3">
                 <button type="submit" class="btn btn-primary">Create User Account</button>
-                <a href="/emi/users/index.php" class="btn btn-ghost">Cancel</a>
+                <a href="/users/index.php" class="btn btn-ghost">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

@@ -27,7 +27,7 @@ $history = $loans->fetchAll();
         <p class="page-subtitle">Customer Profile & Loan History</p>
     </div>
     <div class="flex gap-3">
-        <a href="/emi/loans/add.php?customer_id=<?= $c['id'] ?>" class="btn btn-success">New Loan</a>
+        <a href="/loans/add.php?customer_id=<?= $c['id'] ?>" class="btn btn-success">New Loan</a>
         <a href="index.php" class="btn btn-outline">Back to List</a>
     </div>
 </div>
@@ -85,7 +85,7 @@ $history = $loans->fetchAll();
                         <td><?= formatINR($l['total_price']) ?></td>
                         <td><?= statusBadge($l['status']) ?></td>
                         <td class="text-right">
-                            <a href="/emi/loans/view.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline">View Details</a>
+                            <a href="/loans/view.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline">View Details</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -96,3 +96,4 @@ $history = $loans->fetchAll();
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

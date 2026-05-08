@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = $_POST['payment_date'] ?? date('Y-m-d');
     $ref = $_POST['reference_number'] ?? '';
     $notes = $_POST['notes'] ?? '';
-    $returnUrl = $_POST['return_url'] ?? '/emi/dashboard.php';
+    $returnUrl = $_POST['return_url'] ?? '/dashboard.php';
 
     if ($emiId > 0 && $amount > 0) {
         global $pdo;
@@ -31,3 +31,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: $returnUrl");
     exit;
 }
+

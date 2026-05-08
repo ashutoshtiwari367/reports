@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 session_start();
 if (!empty($_SESSION['user_id'])) {
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user && password_verify($pass, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user'] = $user;
-            header('Location: /emi/dashboard.php');
+            header('Location: /dashboard.php');
             exit;
         } else {
             $error = 'Invalid email or password.';
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - EMI Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/emi/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body class="auth-page">
 
@@ -71,3 +71,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </body>
 </html>
+

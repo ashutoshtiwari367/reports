@@ -4,7 +4,7 @@
             <h3 class="modal-title">Record EMI Payment</h3>
             <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
         </div>
-        <form action="/emi/emis/mark_payment.php" method="POST">
+        <form action="/emis/mark_payment.php" method="POST">
             <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
             <input type="hidden" name="emi_id" id="emi_id" value="">
             <input type="hidden" name="return_url" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
@@ -47,3 +47,4 @@
         </form>
     </div>
 </div>
+

@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 if (!isSuperAdmin()) {
     setFlash('error', 'Access Denied.');
-    header('Location: /emi/dashboard.php');
+    header('Location: /dashboard.php');
     exit;
 }
 
@@ -21,7 +21,7 @@ $users = $stmt->fetchAll();
         <h1 class="text-2xl font-bold text-gray-800">System Users</h1>
         <p class="text-sm text-gray-500">Manage Shop Admins and Staff</p>
     </div>
-    <a href="/emi/users/add.php" class="btn btn-primary">
+    <a href="/users/add.php" class="btn btn-primary">
         + Create User
     </a>
 </div>
@@ -57,10 +57,10 @@ $users = $stmt->fetchAll();
                         <td class="p-4 text-gray-500"><?= date('d M Y', strtotime($u['created_at'])) ?></td>
                         <td class="p-4 text-right">
                             <div class="flex gap-2 justify-end">
-                                <a href="/emi/users/edit.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-outline" title="Edit">Edit</a>
-                                <a href="/emi/users/change_password.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-outline" title="Change Password">Pass</a>
+                                <a href="/users/edit.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-outline" title="Edit">Edit</a>
+                                <a href="/users/change_password.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-outline" title="Change Password">Pass</a>
                                 <?php if ($u['id'] != $user['id']): ?>
-                                    <a href="/emi/users/delete.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-ghost text-danger" onclick="return confirm('Are you sure you want to delete this user?')" title="Delete">Delete</a>
+                                    <a href="/users/delete.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-ghost text-danger" onclick="return confirm('Are you sure you want to delete this user?')" title="Delete">Delete</a>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -75,3 +75,4 @@ $users = $stmt->fetchAll();
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
