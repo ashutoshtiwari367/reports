@@ -61,7 +61,7 @@ function statusBadge(string $status): string {
 function generateLoanNumber(): string {
     global $pdo;
     $month = date('m');
-    $year  = date('Y');
+    $year  = date('y');
     $prefix = "SS-$month-$year-";
 
     // Find the latest loan number for the current month
