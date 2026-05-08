@@ -21,6 +21,8 @@ $stats = [
     'total_collection' => $pdo->query("SELECT COALESCE(SUM(p.amount),0) FROM emi_payments p JOIN emi_schedule e ON p.emi_id=e.id JOIN loans l ON e.loan_id=l.id WHERE 1=1 $shopJoinFilter")->fetchColumn(),
     'total_emi'        => $pdo->query("SELECT COALESCE(SUM(e.emi_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE 1=1 $shopJoinFilter")->fetchColumn(),
     'total_pending'    => $pdo->query("SELECT COALESCE(SUM(e.emi_amount - e.paid_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE e.status IN ('due','partial','overdue') $shopJoinFilter")->fetchColumn(),
+    'closed_loans'     => $pdo->query("SELECT COUNT(*) FROM loans WHERE status='closed' $shopFilter")->fetchColumn(),
+    'total_profit'     => $pdo->query("SELECT COALESCE(SUM(interest_amount),0) FROM loans WHERE 1=1 $shopFilter")->fetchColumn(),
 ];
 
 // Recent EMIs Due Today
@@ -79,6 +81,15 @@ $dueToday = $pdo->query("
             <div class="stat-label">Active Loans</div>
         </div>
     </div>
+    <div class="stat-card">
+        <div class="stat-icon gray">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div>
+            <div class="stat-value"><?= number_format($stats['closed_loans']) ?></div>
+            <div class="stat-label">Closed Loans</div>
+        </div>
+    </div>
 </div>
 
 <div class="dashboard-section-label">Financial Performance</div>
@@ -110,6 +121,17 @@ $dueToday = $pdo->query("
             <div class="stat-label">Total Pending</div>
         </div>
     </div>
+    <?php if(isSuperAdmin()): ?>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-success"><?= formatINR($stats['total_profit']) ?></div>
+            <div class="stat-label">Total Profit (Interest)</div>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 
 <div class="card">
