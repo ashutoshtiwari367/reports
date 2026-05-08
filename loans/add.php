@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $months = (int)$_POST['emi_months'];
     $firstEmi = $_POST['first_emi_date'];
     
-    $remaining = ($price - $down) + $interestAmount;
+    $totalInterest = $interestAmount * $months;
+    $remaining = ($price - $down) + $totalInterest;
     $emiAmount = round($remaining / $months, 2);
     $dueDay = (int)date('j', strtotime($firstEmi));
     if ($dueDay > 28) $dueDay = 28; 
@@ -256,7 +257,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="number" step="0.01" name="down_payment" id="down_payment" value="0" required oninput="calc()">
                 </div>
                 <div class="form-group">
-                    <label>Interest Amount (₹)</label>
+                    <label>Interest Amount (Per Month) (₹)</label>
                     <input type="number" step="0.01" name="interest_amount" id="interest_amount" value="0" required oninput="calc()">
                 </div>
                 <div class="form-group">
@@ -307,7 +308,7 @@ function calc() {
     let interest = parseFloat(document.getElementById('interest_amount').value) || 0;
     let months = parseInt(document.getElementById('months').value) || 1;
     
-    let rem = (price - down) + interest;
+    let rem = (price - down) + (interest * months);
     if(rem < 0) rem = 0;
     document.getElementById('remaining').value = rem.toFixed(2);
     
