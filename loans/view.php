@@ -68,6 +68,16 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <label>Item Price</label>
                     <div class="text-bold" style="font-size:18px;"><?= formatINR($l['total_price']) ?></div>
                 </div>
+                <?php if(isSuperAdmin()): ?>
+                <div style="min-width:120px;">
+                    <label>Purchased Price</label>
+                    <div class="text-bold" style="color:var(--text-muted);"><?= formatINR($l['purchased_price'] ?? 0) ?></div>
+                </div>
+                <div style="min-width:120px;">
+                    <label>Total Profit</label>
+                    <div class="text-bold" style="color:var(--success);"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></div>
+                </div>
+                <?php endif; ?>
                 <div style="min-width:120px;">
                     <label>Interest Amount</label>
                     <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>

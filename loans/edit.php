@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $item = $_POST['item_name'];
     $modelDetail = trim($_POST['model_detail'] ?? '');
     $price = (float)$_POST['total_price'];
+    $purchasedPrice = (float)($_POST['purchased_price'] ?? 0);
     $down = (float)$_POST['down_payment'];
     $interestAmount = (float)$_POST['interest_amount'];
     $months = (int)$_POST['emi_months'];
@@ -49,13 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 1. Update Loan Table
         $upd = $pdo->prepare("UPDATE loans SET 
             sale_date = ?, item_name = ?, model_detail = ?, 
-            total_price = ?, down_payment = ?, interest_amount = ?, 
-            remaining_amount = ?, emi_months = ? 
+            purchased_price = ?, total_price = ?, down_payment = ?, 
+            interest_amount = ?, remaining_amount = ?, emi_months = ? 
             WHERE id = ?");
         $upd->execute([
             $saleDate, $item, $modelDetail, 
-            $price, $down, $interestAmount, 
-            $newTotalLiability, $months, 
+            $purchasedPrice, $price, $down, 
+            $interestAmount, $newTotalLiability, $months, 
             $id
         ]);
         
@@ -146,8 +147,12 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="text" name="model_detail" required value="<?= htmlspecialchars($loan['model_detail'] ?? '') ?>">
                 </div>
                 <div class="form-group">
-                    <label>Total Item Price (₹)</label>
+                    <label>Total Item Price (Selling) (₹)</label>
                     <input type="number" step="0.01" name="total_price" id="total_price" required value="<?= $loan['total_price'] ?>" oninput="calc()">
+                </div>
+                <div class="form-group">
+                    <label>Purchased Price (Cost) (₹)</label>
+                    <input type="number" step="0.01" name="purchased_price" id="purchased_price" required value="<?= $loan['purchased_price'] ?? 0 ?>" oninput="calc()">
                 </div>
                 <div class="form-group">
                     <label>Down Payment (₹)</label>

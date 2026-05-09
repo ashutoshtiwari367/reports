@@ -22,7 +22,15 @@ $stats = [
     'total_emi'        => $pdo->query("SELECT COALESCE(SUM(e.emi_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE 1=1 $shopJoinFilter")->fetchColumn(),
     'total_pending'    => $pdo->query("SELECT COALESCE(SUM(e.emi_amount - e.paid_amount),0) FROM emi_schedule e JOIN loans l ON e.loan_id=l.id WHERE e.status IN ('due','partial','overdue') $shopJoinFilter")->fetchColumn(),
     'closed_loans'     => $pdo->query("SELECT COUNT(*) FROM loans WHERE status='closed' $shopFilter")->fetchColumn(),
-    'total_profit'     => $pdo->query("SELECT COALESCE(SUM(interest_amount),0) FROM loans WHERE 1=1 $shopFilter")->fetchColumn(),
+    'expected_profit'   => $pdo->query("SELECT COALESCE(SUM((total_price - purchased_price) + interest_amount),0) FROM loans WHERE status != 'cancelled' $shopFilter")->fetchColumn(),
+    'received_profit'   => $pdo->query("
+        SELECT COALESCE(SUM(
+            ((total_price - purchased_price) + interest_amount) / NULLIF(total_price + interest_amount, 0) * 
+            (down_payment + (SELECT COALESCE(SUM(paid_amount),0) FROM emi_schedule WHERE loan_id = l.id))
+        ),0)
+        FROM loans l 
+        WHERE l.status != 'cancelled' $shopJoinFilter
+    ")->fetchColumn(),
 ];
 
 // Recent EMIs Due Today
@@ -123,12 +131,21 @@ $dueToday = $pdo->query("
     </div>
     <?php if(isSuperAdmin()): ?>
     <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--accent);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-accent"><?= formatINR($stats['expected_profit']) ?></div>
+            <div class="stat-label">Expected Total Profit</div>
+        </div>
+    </div>
+    <div class="stat-card">
         <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <div>
-            <div class="stat-value text-success"><?= formatINR($stats['total_profit']) ?></div>
-            <div class="stat-label">Total Profit (Interest)</div>
+            <div class="stat-value text-success"><?= formatINR($stats['received_profit']) ?></div>
+            <div class="stat-label">Received Profit (Till Date)</div>
         </div>
     </div>
     <?php endif; ?>

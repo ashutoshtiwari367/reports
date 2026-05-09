@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $item = $_POST['item_name'];
     $modelDetail = trim($_POST['model_detail'] ?? '');
     $price = (float)$_POST['total_price'];
+    $purchasedPrice = (float)($_POST['purchased_price'] ?? 0);
     $down = (float)$_POST['down_payment'];
     $interestAmount = (float)$_POST['interest_amount'];
     $months = (int)$_POST['emi_months'];
@@ -137,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // 2. Create Loan
-        $stmt = $pdo->prepare("INSERT INTO loans (shop_id, customer_id, reference_by, sale_date, loan_number, item_name, model_detail, total_price, down_payment, interest_amount, remaining_amount, emi_months, emi_amount, emi_due_day, first_emi_date, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->execute([$shopId, $custId, $refBy, $saleDate, $loanNum, $item, $modelDetail, $price, $down, $interestAmount, $remaining, $months, $emiAmount, $dueDay, $firstEmi, $_SESSION['user_id']]);
+        $stmt = $pdo->prepare("INSERT INTO loans (shop_id, customer_id, reference_by, sale_date, loan_number, item_name, model_detail, purchased_price, total_price, down_payment, interest_amount, remaining_amount, emi_months, emi_amount, emi_due_day, first_emi_date, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->execute([$shopId, $custId, $refBy, $saleDate, $loanNum, $item, $modelDetail, $purchasedPrice, $price, $down, $interestAmount, $remaining, $months, $emiAmount, $dueDay, $firstEmi, $_SESSION['user_id']]);
         $loanId = $pdo->lastInsertId();
         
         generateEMISchedule($loanId, $remaining, $months, $firstEmi, $emiAmount);
@@ -248,8 +249,12 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="text" name="model_detail" required placeholder="e.g. iPhone 15 Pro Max 256GB">
                 </div>
                 <div class="form-group">
-                    <label>Item Price (₹) *</label>
+                    <label>Item Price (Selling) (₹) *</label>
                     <input type="number" step="0.01" name="total_price" id="total_price" required oninput="calc()">
+                </div>
+                <div class="form-group">
+                    <label>Purchased Price (Cost) (₹) *</label>
+                    <input type="number" step="0.01" name="purchased_price" id="purchased_price" required oninput="calc()">
                 </div>
                 <div class="form-group">
                     <label>Down Payment (₹)</label>
