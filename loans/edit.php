@@ -40,6 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recalculate New Liability
     $newTotalLiability = ($price - $down) + $interestAmount;
     
+    // Check if new loan number is unique
+    $newLoanNum = trim($_POST['loan_number']);
+    $checkStmt = $pdo->prepare("SELECT id FROM loans WHERE loan_number = ? AND id != ? LIMIT 1");
+    $checkStmt->execute([$newLoanNum, $id]);
+    if ($checkStmt->fetch()) {
+        setFlash('error', "Loan Number '$newLoanNum' is already assigned to another loan.");
+        header("Location: edit.php?id=$id");
+        exit;
+    }
+    
     // Remaining balance to be paid
     $newRemainingBalance = $newTotalLiability - $totalPaid;
     if ($newRemainingBalance < 0) $newRemainingBalance = 0;
@@ -51,12 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $upd = $pdo->prepare("UPDATE loans SET 
             sale_date = ?, item_name = ?, model_detail = ?, 
             purchased_price = ?, total_price = ?, down_payment = ?, 
-            interest_amount = ?, remaining_amount = ?, emi_months = ? 
+            interest_amount = ?, remaining_amount = ?, emi_months = ?,
+            loan_number = ?
             WHERE id = ?");
         $upd->execute([
             $saleDate, $item, $modelDetail, 
             $purchasedPrice, $price, $down, 
             $interestAmount, $newTotalLiability, $months, 
+            trim($_POST['loan_number']),
             $id
         ]);
         
@@ -134,6 +146,10 @@ require_once __DIR__ . '/../includes/header.php';
         
         <form method="POST" id="loanForm">
             <div class="form-grid mb-4">
+                <div class="form-group">
+                    <label>Loan Number *</label>
+                    <input type="text" name="loan_number" required value="<?= htmlspecialchars($loan['loan_number']) ?>">
+                </div>
                 <div class="form-group">
                     <label>Sale Date</label>
                     <input type="date" name="sale_date" required value="<?= $loan['sale_date'] ?>">

@@ -60,7 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dueDay = (int)date('j', strtotime($firstEmi));
     if ($dueDay > 28) $dueDay = 28; 
     
-    $loanNum = generateLoanNumber();
+    $manualLoanNum = trim($_POST['manual_loan_number'] ?? '');
+    $loanNum = !empty($manualLoanNum) ? $manualLoanNum : generateLoanNumber();
+
+    // Check if loan number already exists
+    $checkStmt = $pdo->prepare("SELECT id FROM loans WHERE loan_number = ? LIMIT 1");
+    $checkStmt->execute([$loanNum]);
+    if ($checkStmt->fetch()) {
+        setFlash('error', "Loan Number '$loanNum' already exists. Please use a unique number.");
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
     
     // Handle File Uploads
     $custPhotoPath = '';
@@ -191,6 +201,11 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="form-group">
                     <label>Reference By</label>
                     <input type="text" name="reference_by" placeholder="Person who referred">
+                </div>
+                <div class="form-group">
+                    <label>Manual Loan Number (Optional)</label>
+                    <input type="text" name="manual_loan_number" placeholder="Enter manual # or leave blank">
+                    <small class="text-muted" style="font-size: 11px;">Khali chhodne par auto-generate hoga.</small>
                 </div>
 
                 <div class="form-group">
