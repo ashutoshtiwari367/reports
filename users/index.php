@@ -54,7 +54,7 @@ $users = $stmt->fetchAll();
                         <td>
                             <?= $u['shop_id'] ? htmlspecialchars($u['shop_name']) : '<span class="text-muted" style="font-size:11px;">All Shops</span>' ?>
                         </td>
-                        <td class="text-muted"><?= date('d M Y', strtotime($u['created_at'])) ?></td>
+                        <td class="text-muted"><?= formatDate($u['created_at']) ?></td>
                         <td class="text-right">
                             <div class="flex gap-2" style="justify-content: flex-end;">
                                 <a href="/users/edit.php?id=<?= $u['id'] ?>" class="btn btn-sm btn-outline">Edit</a>

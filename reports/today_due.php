@@ -17,7 +17,7 @@ $due = $pdo->query("
 <div class="page-header">
     <div>
         <h1 class="page-title">Today's Due EMIs</h1>
-        <p class="page-subtitle">Schedule for <?= date('d M, Y') ?></p>
+        <p class="page-subtitle">Schedule for <?= formatDate(date('Y-m-d')) ?></p>
     </div>
     <div class="flex gap-3">
         <div class="search-bar">

@@ -52,7 +52,7 @@ $overdue = $pdo->query("
                 
                 <?php foreach($overdue as $emi): ?>
                 <tr>
-                    <td><?= date('d M, Y', strtotime($emi['due_date'])) ?></td>
+                    <td><?= formatDate($emi['due_date']) ?></td>
                     <td><span class="badge badge-overdue"><?= $emi['days_late'] ?> Days</span></td>
                     <td><strong><a href="/loans/view.php?id=<?= $emi['loan_id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($emi['loan_number']) ?></a></strong></td>
                     <td><?= htmlspecialchars($emi['customer_name']) ?></td>
@@ -61,7 +61,7 @@ $overdue = $pdo->query("
                     <td>
                         <div class="flex gap-2">
                             <button class="btn btn-sm btn-success" onclick="openPaymentModal(<?= $emi['id'] ?>, <?= $emi['emi_amount'] - $emi['paid_amount'] ?>)">Mark Paid</button>
-                            <a href="<?= whatsappLink($emi['phone'], "URGENT: Hello {$emi['customer_name']}, your EMI of ".formatINR($emi['emi_amount'])." was due on ".date('d M Y', strtotime($emi['due_date'])).". Please pay immediately to avoid penalty.") ?>" target="_blank" class="btn btn-sm btn-whatsapp">
+                            <a href="<?= whatsappLink($emi['phone'], "URGENT: Hello {$emi['customer_name']}, your EMI of ".formatINR($emi['emi_amount'])." was due on ".formatDate($emi['due_date']).". Please pay immediately to avoid penalty.") ?>" target="_blank" class="btn btn-sm btn-whatsapp">
                                 Reminder
                             </a>
                         </div>

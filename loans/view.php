@@ -28,7 +28,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
 <div class="page-header">
     <div>
         <h1 class="page-title">Loan #<?= htmlspecialchars($l['loan_number']) ?></h1>
-        <p class="page-subtitle"><?= htmlspecialchars($l['customer_name']) ?> • Sale Date: <?= date('d M Y', strtotime($l['sale_date'])) ?></p>
+        <p class="page-subtitle"><?= htmlspecialchars($l['customer_name']) ?> • Sale Date: <?= formatDate($l['sale_date']) ?></p>
     </div>
     <div class="flex gap-3">
         <?= statusBadge($l['status']) ?>
@@ -200,7 +200,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
             <div>
                 <div style="font-size:12px; color:var(--text-muted); font-weight:600;">Due Date</div>
                 <div class="text-bold" style="<?= $emi['status']==='overdue' ? 'color:var(--danger)' : '' ?>">
-                    <?= date('d M, Y', strtotime($emi['due_date'])) ?>
+                    <?= formatDate($emi['due_date']) ?>
                 </div>
             </div>
             

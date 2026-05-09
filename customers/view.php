@@ -50,7 +50,7 @@ $history = $loans->fetchAll();
             <h3 class="mb-4 text-muted" style="font-size:12px;text-transform:uppercase;">Identity</h3>
             <p><strong>Proof Type:</strong> <?= htmlspecialchars($c['id_proof_type'] ?: 'Not Provided') ?></p>
             <p><strong>Proof No:</strong> <?= htmlspecialchars($c['id_proof_number'] ?: 'Not Provided') ?></p>
-            <p class="mt-4"><strong>Registered:</strong> <?= date('d M, Y', strtotime($c['created_at'])) ?></p>
+            <p class="mt-4"><strong>Registered:</strong> <?= formatDate($c['created_at']) ?></p>
         </div>
     </div>
 </div>

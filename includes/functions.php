@@ -34,6 +34,10 @@ function formatINR(float $amount): string {
     return '₹' . number_format($amount, 2);
 }
 
+function formatDate(string $date): string {
+    return date('d-m-y', strtotime($date));
+}
+
 // ─── EMI Status ─────────────────────────────────────────────
 function computeEMIStatus(array $emi): string {
     $today = date('Y-m-d');

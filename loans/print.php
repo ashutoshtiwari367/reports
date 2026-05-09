@@ -91,7 +91,7 @@ $displayItemPrice = $l['total_price'] + $l['interest_amount'];
             <div class="invoice-details">
                 <h1 style="margin:0; color:#1e293b; font-size: 32px;">INVOICE</h1>
                 <p><strong>Loan ID:</strong> <?= htmlspecialchars($l['loan_number']) ?><br>
-                <strong>Sale Date:</strong> <?= date('d-m-Y', strtotime($l['sale_date'])) ?></p>
+                <strong>Sale Date:</strong> <?= formatDate($l['sale_date']) ?></p>
             </div>
         </div>
 
@@ -171,7 +171,7 @@ $displayItemPrice = $l['total_price'] + $l['interest_amount'];
                 <?php foreach($page1_emis as $emi): ?>
                 <tr>
                     <td><?= $emi['installment_number'] ?></td>
-                    <td><?= date('d-m-Y', strtotime($emi['due_date'])) ?></td>
+                    <td><?= formatDate($emi['due_date']) ?></td>
                     <td><?= formatINR($emi['emi_amount']) ?></td>
                     <td><?= ucfirst($emi['status']) ?></td>
                 </tr>
@@ -204,7 +204,7 @@ $displayItemPrice = $l['total_price'] + $l['interest_amount'];
                 <?php foreach($page2_emis as $emi): ?>
                 <tr>
                     <td><?= $emi['installment_number'] ?></td>
-                    <td><?= date('d-m-Y', strtotime($emi['due_date'])) ?></td>
+                    <td><?= formatDate($emi['due_date']) ?></td>
                     <td><?= formatINR($emi['emi_amount']) ?></td>
                     <td><?= ucfirst($emi['status']) ?></td>
                 </tr>
