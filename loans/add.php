@@ -114,26 +114,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($existingCust) {
             $custId = $existingCust['id'];
-            $upd = $pdo->prepare("UPDATE customers SET name=?, city=?, address=?, landmark=?, 
-                ref_1_name=?, ref_1_phone=?, ref_1_relation=?,
-                ref_2_name=?, ref_2_phone=?, ref_2_relation=?,
-                ref_3_name=?, ref_3_phone=?, ref_3_relation=?,
-                ref_4_name=?, ref_4_phone=?, ref_4_relation=?,
-                customer_photo=COALESCE(NULLIF(?,''), customer_photo), 
-                aadhaar_photo=COALESCE(NULLIF(?,''), aadhaar_photo),
-                aadhaar_back_photo=COALESCE(NULLIF(?,''), aadhaar_back_photo)
-                WHERE id=?");
             
-            // Correct mapping: name(1), city(3), address(4), landmark(5), ref_1...ref_4 (6-17)
+            $fields = [
+                "name=?", "city=?", "address=?", "landmark=?", 
+                "ref_1_name=?", "ref_1_phone=?", "ref_1_relation=?",
+                "ref_2_name=?", "ref_2_phone=?", "ref_2_relation=?",
+                "ref_3_name=?", "ref_3_phone=?", "ref_3_relation=?",
+                "ref_4_name=?", "ref_4_phone=?", "ref_4_relation=?"
+            ];
             $updParams = [
                 $custName, $custCity, $custAddr, $landmark,
                 $refs['ref_1_name'], $refs['ref_1_phone'], $refs['ref_1_relation'],
                 $refs['ref_2_name'], $refs['ref_2_phone'], $refs['ref_2_relation'],
                 $refs['ref_3_name'], $refs['ref_3_phone'], $refs['ref_3_relation'],
-                $refs['ref_4_name'], $refs['ref_4_phone'], $refs['ref_4_relation'],
-                $custPhotoPath, $aadhaarPhotoPath, $aadhaarBackPath,
-                $custId
+                $refs['ref_4_name'], $refs['ref_4_phone'], $refs['ref_4_relation']
             ];
+
+            if ($custPhotoPath) {
+                $fields[] = "customer_photo=?";
+                $updParams[] = $custPhotoPath;
+            }
+            if ($aadhaarPhotoPath) {
+                $fields[] = "aadhaar_photo=?";
+                $updParams[] = $aadhaarPhotoPath;
+            }
+            if ($aadhaarBackPath) {
+                $fields[] = "aadhaar_back_photo=?";
+                $updParams[] = $aadhaarBackPath;
+            }
+
+            $updParams[] = $custId;
+            $sql = "UPDATE customers SET " . implode(", ", $fields) . " WHERE id=?";
+            $upd = $pdo->prepare($sql);
             $upd->execute($updParams);
         } else {
             $ins = $pdo->prepare("INSERT INTO customers (shop_id, name, phone, city, address, landmark, 
