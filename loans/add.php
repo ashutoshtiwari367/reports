@@ -243,7 +243,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="dashboard-section-label">2. References (Guarantors)</div>
-            <div class="form-grid mb-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+            <div class="form-grid responsive-grid mb-4">
                 <?php for($i=1; $i<=4; $i++): 
                     $required = ($i <= 2) ? 'required' : '';
                 ?>

@@ -533,19 +533,36 @@ select { cursor: pointer; }
         margin-left: 0;
     }
     .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
-    .topbar { padding: 0 16px; }
-    .topbar-date { display: none; } /* Hide date on small mobile to save space */
-    .stats-grid { grid-template-columns: 1fr; }
-    .page-content { padding: 12px; }
-    .emi-row { grid-template-columns: 1fr; gap: 10px; }
-    .form-grid { grid-template-columns: 1fr; }
+    .topbar { padding: 0 12px; }
+    .topbar-date { display: none; }
+    
+    .page-content { padding: 16px 12px; }
+    
+    .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+    .stat-card { padding: 16px; }
+    
+    .form-grid { grid-template-columns: 1fr !important; gap: 16px; }
+    .responsive-grid { grid-template-columns: 1fr !important; }
+    
+    .emi-row { 
+        grid-template-columns: 1fr; 
+        gap: 8px; 
+        padding: 16px; 
+        border-radius: 12px;
+        margin-bottom: 10px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+    }
+    .emi-row > div { display: flex; justify-content: space-between; align-items: center; }
+    .emi-row > div > div:first-child { font-size: 11px; }
+    .emi-row .text-right { justify-content: flex-start !important; margin-top: 4px; }
+    .emi-row .btn { width: 100%; justify-content: center; }
     
     .table-wrapper {
         margin: 0 -12px;
         border-radius: 0;
         border-left: none;
         border-right: none;
-        overflow-x: auto;
     }
     
     .page-header {
@@ -556,14 +573,31 @@ select { cursor: pointer; }
     
     .page-header .flex {
         width: 100%;
+        flex-direction: column;
+        gap: 8px;
     }
     .page-header .btn {
-        flex: 1;
+        width: 100%;
         justify-content: center;
     }
+    
+    .card-body { padding: 16px; }
+    .dashboard-section-label { font-size: 11px; }
+    
+    .form-group.full { grid-column: auto; }
+    
+    /* Document previews on mobile */
+    .doc-images { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .page-title { font-size: 18px; }
+    .btn { padding: 8px 12px; font-size: 12px; }
+    .stat-value { font-size: 20px; }
 }
 
 /* ── Utility ── */
+.flex-responsive { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .text-muted   { color: var(--text-muted); }
 .text-success { color: var(--success); }
 .text-danger  { color: var(--danger); }

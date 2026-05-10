@@ -44,7 +44,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
     </div>
 </div>
 
-<div class="form-grid mb-4" style="grid-template-columns: 1.5fr 1fr;">
+<div class="form-grid responsive-grid mb-4">
     <div class="card">
         <div class="card-body">
             <div class="dashboard-section-label">Product & Financial Details</div>
@@ -120,7 +120,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="flex gap-4">
+            <div class="flex-responsive mt-4">
                 <div style="flex:1; text-align:center;">
                     <label style="display:block; margin-bottom:4px; font-size:11px;">Aadhaar (Front)</label>
                     <?php if($l['aadhaar_photo']): ?>
@@ -146,7 +146,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
     <div class="card">
         <div class="card-body">
             <div class="dashboard-section-label">Customer Contact & Address</div>
-            <div class="flex gap-4 mb-4">
+            <div class="flex-responsive mb-4">
                 <div>
                     <label>Phone</label>
                     <div class="text-bold"><a href="tel:<?= $l['phone'] ?>"><?= $l['phone'] ?></a></div>
@@ -170,7 +170,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
     <div class="card">
         <div class="card-body">
             <div class="dashboard-section-label">References / Guarantors</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="doc-images">
                 <?php for($i=1; $i<=4; $i++): 
                     if(!$l["ref_{$i}_name"]) continue;
                 ?>
