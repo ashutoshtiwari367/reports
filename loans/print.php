@@ -119,6 +119,10 @@ $totalGross = $l['total_price'] + $l['interest_amount'];
                 <th style="text-align: right;">Amount (INR)</th>
             </tr>
             <tr>
+                <td>Cost Price (Lagat)</td>
+                <td style="text-align: right; color: #64748b;"><?= formatINR($l['purchased_price'] ?? 0) ?></td>
+            </tr>
+            <tr>
                 <td>Item Price (Sell Price)</td>
                 <td style="text-align: right;"><?= formatINR($l['total_price']) ?></td>
             </tr>
