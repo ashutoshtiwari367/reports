@@ -280,7 +280,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="number" step="0.01" name="total_price" id="total_price" required oninput="calc()">
                 </div>
                 <div class="form-group">
-                    <label>Purchase Price (₹) *</label>
+                    <label>Cost Price (₹) *</label>
                     <input type="number" step="0.01" name="purchased_price" id="purchased_price" required oninput="calc()">
                 </div>
                 <div class="form-group">

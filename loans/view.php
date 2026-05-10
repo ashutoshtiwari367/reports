@@ -63,7 +63,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                 </div>
             </div>
 
-            <div class="flex gap-4 mb-4 flex-wrap border-top pt-4">
+            <div class="flex-responsive mb-4 border-top pt-4" style="overflow-x: auto; white-space: nowrap; padding-bottom: 8px;">
                 <div style="min-width:120px;">
                     <label>Sell Price</label>
                     <div class="text-bold" style="font-size:18px;"><?= formatINR($l['total_price']) ?></div>
@@ -77,7 +77,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>
                 </div>
                 <div style="min-width:120px;">
-                    <label>Purchase Price</label>
+                    <label>Cost Price</label>
                     <div class="text-bold" style="color:var(--text-muted);"><?= formatINR($l['purchased_price'] ?? 0) ?></div>
                 </div>
                 <div style="min-width:120px;">
