@@ -39,6 +39,9 @@ $loans = $pdo->query("
                     <th>Item</th>
                     <th>Total Price</th>
                     <th>EMI</th>
+                    <?php if(isSuperAdmin()): ?>
+                        <th>Profit</th>
+                    <?php endif; ?>
                     <th>Status</th>
                     <th class="text-right">Actions</th>
                 </tr>
@@ -57,6 +60,9 @@ $loans = $pdo->query("
                         <small class="text-muted">Bal: <?= formatINR($l['remaining_amount']) ?></small>
                     </td>
                     <td><?= $l['emi_months'] ?> mo × <?= formatINR($l['emi_amount']) ?></td>
+                    <?php if(isSuperAdmin()): ?>
+                        <td style="color:var(--success); font-weight:600;"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></td>
+                    <?php endif; ?>
                     <td><?= statusBadge($l['status']) ?></td>
                     <td class="text-right flex gap-2" style="justify-content: flex-end;">
                         <a href="view.php?id=<?= $l['id'] ?>" class="btn btn-sm btn-outline">View</a>

@@ -65,27 +65,31 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
 
             <div class="flex gap-4 mb-4 flex-wrap border-top pt-4">
                 <div style="min-width:120px;">
-                    <label>Item Price</label>
+                    <label>Purchase Price</label>
                     <div class="text-bold" style="font-size:18px;"><?= formatINR($l['total_price']) ?></div>
-                </div>
-                <?php if(isSuperAdmin()): ?>
-                <div style="min-width:120px;">
-                    <label>Purchased Price</label>
-                    <div class="text-bold" style="color:var(--text-muted);"><?= formatINR($l['purchased_price'] ?? 0) ?></div>
-                </div>
-                <div style="min-width:120px;">
-                    <label>Total Profit</label>
-                    <div class="text-bold" style="color:var(--success);"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></div>
-                </div>
-                <?php endif; ?>
-                <div style="min-width:120px;">
-                    <label>Interest Amount</label>
-                    <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>
                 </div>
                 <div style="min-width:120px;">
                     <label>Down Payment</label>
                     <div class="text-bold" style="color:var(--success);"><?= formatINR($l['down_payment']) ?></div>
                 </div>
+                <div style="min-width:120px;">
+                    <label>Interest</label>
+                    <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>
+                </div>
+                <?php if(isSuperAdmin()): ?>
+                <div style="min-width:120px;">
+                    <label>Item Price (Cost)</label>
+                    <div class="text-bold" style="color:var(--text-muted);"><?= formatINR($l['purchased_price'] ?? 0) ?></div>
+                </div>
+                <div style="min-width:120px;">
+                    <label>Cost</label>
+                    <div class="text-bold" style="color:var(--accent);"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></div>
+                </div>
+                <div style="min-width:120px;">
+                    <label>Profit</label>
+                    <div class="text-bold" style="color:var(--success);"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></div>
+                </div>
+                <?php endif; ?>
                 <div style="min-width:120px;">
                     <label>EMI Amount</label>
                     <div class="text-bold" style="color:var(--accent);"><?= formatINR($l['emi_amount']) ?> / month</div>
