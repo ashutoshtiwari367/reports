@@ -37,7 +37,7 @@ $loans = $pdo->query("
                     <th>Loan No.</th>
                     <th>Customer</th>
                     <th>Item</th>
-                    <th>Total Price</th>
+                    <th>Sell Price</th>
                     <th>EMI</th>
                     <?php if(isSuperAdmin()): ?>
                         <th>Profit</th>

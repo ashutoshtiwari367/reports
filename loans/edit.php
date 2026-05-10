@@ -163,11 +163,11 @@ require_once __DIR__ . '/../includes/header.php';
                     <input type="text" name="model_detail" required value="<?= htmlspecialchars($loan['model_detail'] ?? '') ?>">
                 </div>
                 <div class="form-group">
-                    <label>Total Item Price (Selling) (₹)</label>
+                    <label>Sell Price (₹)</label>
                     <input type="number" step="0.01" name="total_price" id="total_price" required value="<?= $loan['total_price'] ?>" oninput="calc()">
                 </div>
                 <div class="form-group">
-                    <label>Purchased Price (Cost) (₹)</label>
+                    <label>Purchase Price (₹)</label>
                     <input type="number" step="0.01" name="purchased_price" id="purchased_price" required value="<?= $loan['purchased_price'] ?? 0 ?>" oninput="calc()">
                 </div>
                 <div class="form-group">
