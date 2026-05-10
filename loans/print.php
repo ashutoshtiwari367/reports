@@ -138,9 +138,17 @@ $totalGross = $l['total_price'] + $l['interest_amount'];
                 <td>Down Payment (Advance Received)</td>
                 <td style="text-align: right; color: #10b981;">- <?= formatINR($l['down_payment']) ?></td>
             </tr>
+            <tr>
+                <td><strong>Net Shop Investment (Cost)</strong></td>
+                <td style="text-align: right; color: #6366f1;"><strong><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></strong></td>
+            </tr>
             <tr class="total-row">
                 <td>Net Financed Amount (Remaining)</td>
                 <td style="text-align: right; font-size: 15px;"><?= formatINR($l['remaining_amount']) ?></td>
+            </tr>
+            <tr style="background: #ecfdf5;">
+                <td><strong>Total Expected Profit</strong></td>
+                <td style="text-align: right; color: #059669;"><strong><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></strong></td>
             </tr>
             <tr>
                 <td style="font-size: 15px;"><strong>Monthly EMI Amount</strong></td>

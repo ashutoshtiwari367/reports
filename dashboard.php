@@ -31,6 +31,7 @@ $stats = [
         FROM loans l 
         WHERE l.status != 'cancelled' $shopJoinFilter
     ")->fetchColumn(),
+    'total_cost' => $pdo->query("SELECT COALESCE(SUM(purchased_price - down_payment),0) FROM loans WHERE status != 'cancelled' $shopFilter")->fetchColumn(),
 ];
 
 // Recent EMIs Due Today
@@ -146,6 +147,15 @@ $dueToday = $pdo->query("
         <div>
             <div class="stat-value text-success"><?= formatINR($stats['received_profit']) ?></div>
             <div class="stat-label">Received Profit (Till Date)</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-warning"><?= formatINR($stats['total_cost']) ?></div>
+            <div class="stat-label">Total Investment (Cost)</div>
         </div>
     </div>
     <?php endif; ?>
