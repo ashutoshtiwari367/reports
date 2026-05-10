@@ -77,12 +77,8 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>
                 </div>
                 <div style="min-width:120px;">
-                    <label>Cost Price</label>
-                    <div class="text-bold" style="color:var(--text-muted);"><?= formatINR($l['purchased_price'] ?? 0) ?></div>
-                </div>
-                <div style="min-width:120px;">
-                    <label>Cost</label>
-                    <div class="text-bold" style="color:var(--accent);"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></div>
+                    <label>Cost Price (Lagat)</label>
+                    <div class="text-bold" style="color:var(--text-muted);"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></div>
                 </div>
                 <div style="min-width:120px;">
                     <label>Profit</label>
