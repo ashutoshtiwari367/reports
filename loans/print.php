@@ -26,8 +26,8 @@ $emis = $pdo->prepare("SELECT * FROM emi_schedule WHERE loan_id = ? ORDER BY ins
 $emis->execute([$id]);
 $schedule = $emis->fetchAll();
 
-// Hide interest amount by adding it to display price
-$displayItemPrice = $l['total_price'] + $l['interest_amount'];
+// Total calculation for display
+$totalGross = $l['total_price'] + $l['interest_amount'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,19 +119,27 @@ $displayItemPrice = $l['total_price'] + $l['interest_amount'];
                 <th style="text-align: right;">Amount (INR)</th>
             </tr>
             <tr>
-                <td>Product Sale Value (Inclusive of all charges)</td>
-                <td style="text-align: right;"><?= formatINR($displayItemPrice) ?></td>
+                <td>Item Price (Sell Price)</td>
+                <td style="text-align: right;"><?= formatINR($l['total_price']) ?></td>
             </tr>
             <tr>
-                <td>Advance / Down Payment Received</td>
+                <td>Interest / Finance Charges</td>
+                <td style="text-align: right; color: #ef4444;">+ <?= formatINR($l['interest_amount']) ?></td>
+            </tr>
+            <tr style="background: #f1f5f9;">
+                <td><strong>Total Gross Amount</strong></td>
+                <td style="text-align: right;"><strong><?= formatINR($l['total_price'] + $l['interest_amount']) ?></strong></td>
+            </tr>
+            <tr>
+                <td>Down Payment (Advance Received)</td>
                 <td style="text-align: right; color: #10b981;">- <?= formatINR($l['down_payment']) ?></td>
             </tr>
             <tr class="total-row">
-                <td>Financed Amount (Principal + Finance)</td>
+                <td>Net Financed Amount (Remaining)</td>
                 <td style="text-align: right; font-size: 15px;"><?= formatINR($l['remaining_amount']) ?></td>
             </tr>
             <tr>
-                <td style="font-size: 15px;"><strong>Fixed Monthly EMI</strong></td>
+                <td style="font-size: 15px;"><strong>Monthly EMI Amount</strong></td>
                 <td style="text-align: right; font-size: 18px; color: #1e293b;"><strong><?= formatINR($l['emi_amount']) ?></strong></td>
             </tr>
         </table>

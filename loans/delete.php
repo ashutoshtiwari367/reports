@@ -15,11 +15,36 @@ $id = (int)($_GET['id'] ?? 0);
 if ($id > 0) {
     global $pdo;
     try {
-        $stmt = $pdo->prepare("DELETE FROM loans WHERE id = ?");
+        $pdo->beginTransaction();
+
+        // 1. Get customer_id before deleting loan
+        $stmt = $pdo->prepare("SELECT customer_id FROM loans WHERE id = ?");
         $stmt->execute([$id]);
-        setFlash('success', 'Loan deleted successfully.');
+        $loanData = $stmt->fetch();
+        
+        if ($loanData) {
+            $custId = $loanData['customer_id'];
+            
+            // 2. Delete the loan
+            $stmt = $pdo->prepare("DELETE FROM loans WHERE id = ?");
+            $stmt->execute([$id]);
+            
+            // 3. Check if customer has any OTHER loans
+            $check = $pdo->prepare("SELECT COUNT(*) FROM loans WHERE customer_id = ?");
+            $check->execute([$custId]);
+            $remainingLoans = (int)$check->fetchColumn();
+            
+            if ($remainingLoans === 0) {
+                // 4. Delete the customer if no loans are left
+                $pdo->prepare("DELETE FROM customers WHERE id = ?")->execute([$custId]);
+            }
+        }
+
+        $pdo->commit();
+        setFlash('success', 'Loan and associated customer (if no other loans) deleted successfully.');
     } catch (Exception $e) {
-        setFlash('error', 'Could not delete loan: ' . $e->getMessage());
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        setFlash('error', 'Could not delete: ' . $e->getMessage());
     }
 } else {
     setFlash('error', 'Invalid Loan ID.');
