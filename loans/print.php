@@ -118,17 +118,18 @@ $totalGross = $l['total_price'] + $l['interest_amount'];
                 <th>Description of Charges</th>
                 <th style="text-align: right;">Amount (INR)</th>
             </tr>
-            <tr>
-                <td>Cost Price (Lagat)</td>
-                <td style="text-align: right; color: #64748b;"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></td>
-            </tr>
+           
             <tr>
                 <td>Item Price (Sell Price)</td>
                 <td style="text-align: right;"><?= formatINR($l['total_price']) ?></td>
             </tr>
             <tr>
-                <td>Interest / Finance Charges</td>
+                <td>File Charges</td>
                 <td style="text-align: right; color: #ef4444;">+ <?= formatINR($l['interest_amount']) ?></td>
+            </tr>
+             <tr>
+                <td>Cost Price (Lagat)</td>
+                <td style="text-align: right; color: #64748b;"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></td>
             </tr>
             <tr style="background: #f1f5f9;">
                 <td><strong>Total Gross Amount</strong></td>
