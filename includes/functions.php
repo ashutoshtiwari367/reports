@@ -193,3 +193,33 @@ function verifyCsrf(): void {
     }
 }
 
+// ─── Business Analytics ─────────────────────────────────────
+function getShopTotalLagat(?int $shopId = null): float {
+    global $pdo;
+    $filter = $shopId ? "WHERE shop_id = $shopId" : "";
+    $where = $shopId ? "AND status != 'cancelled'" : "WHERE status != 'cancelled'";
+    return (float)$pdo->query("SELECT COALESCE(SUM(purchased_price - down_payment),0) FROM loans $filter $where")->fetchColumn();
+}
+
+function getShopTotalProfit(?int $shopId = null): float {
+    global $pdo;
+    $filter = $shopId ? "WHERE shop_id = $shopId" : "";
+    $where = $shopId ? "AND status != 'cancelled'" : "WHERE status != 'cancelled'";
+    return (float)$pdo->query("SELECT COALESCE(SUM((total_price - purchased_price) + interest_amount),0) FROM loans $filter $where")->fetchColumn();
+}
+
+function getShopReceivedProfit(?int $shopId = null): float {
+    global $pdo;
+    $filter = $shopId ? "WHERE l.shop_id = $shopId" : "";
+    $where = $shopId ? "AND l.status != 'cancelled'" : "WHERE l.status != 'cancelled'";
+    // Calculates proportional profit based on collections (Down Payment + EMI Paid)
+    return (float)$pdo->query("
+        SELECT COALESCE(SUM(
+            ((total_price - purchased_price) + interest_amount) / NULLIF(total_price + interest_amount, 0) * 
+            (down_payment + (SELECT COALESCE(SUM(paid_amount),0) FROM emi_schedule WHERE loan_id = l.id))
+        ),0)
+        FROM loans l 
+        $filter $where
+    ")->fetchColumn();
+}
+

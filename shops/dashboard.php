@@ -22,6 +22,9 @@ $stats = [
         JOIN loans l ON e.loan_id = l.id 
         WHERE l.shop_id=$id
     ")->fetchColumn(),
+    'expected_profit' => getShopTotalProfit($id),
+    'received_profit' => getShopReceivedProfit($id),
+    'total_lagat'     => getShopTotalLagat($id),
 ];
 
 $today = date('Y-m-d');
@@ -73,6 +76,33 @@ require_once __DIR__ . '/../includes/header.php';
         <div>
             <div class="stat-value"><?= formatINR($stats['total_collection']) ?></div>
             <div class="stat-label">Total Collection</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--accent);">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-accent"><?= formatINR($stats['expected_profit']) ?></div>
+            <div class="stat-label">Expected Profit</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-success"><?= formatINR($stats['received_profit']) ?></div>
+            <div class="stat-label">Received Profit</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+            <div class="stat-value text-warning"><?= formatINR($stats['total_lagat']) ?></div>
+            <div class="stat-label">Total Cost (Lagat)</div>
         </div>
     </div>
 </div>
