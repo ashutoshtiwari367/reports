@@ -76,6 +76,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <label>Interest</label>
                     <div class="text-bold" style="color:var(--danger);"><?= formatINR($l['interest_amount']) ?></div>
                 </div>
+                <?php if(isSuperAdmin()): ?>
                 <div style="min-width:120px;">
                     <label>Cost Price (Lagat)</label>
                     <div class="text-bold" style="color:var(--text-muted);"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></div>
@@ -84,6 +85,7 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
                     <label>Profit</label>
                     <div class="text-bold" style="color:var(--success);"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></div>
                 </div>
+                <?php endif; ?>
                 <div style="min-width:120px;">
                     <label>EMI Amount</label>
                     <div class="text-bold" style="color:var(--accent);"><?= formatINR($l['emi_amount']) ?> / month</div>

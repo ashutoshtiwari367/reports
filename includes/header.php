@@ -19,6 +19,48 @@ $flash = getFlash();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Flatpickr for dd/mm/yy date format -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .flatpickr-calendar {
+            background: var(--surface) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: var(--shadow-md) !important;
+            font-family: inherit !important;
+            border-radius: var(--radius) !important;
+        }
+        .flatpickr-day.selected, 
+        .flatpickr-day.startRange, 
+        .flatpickr-day.endRange,
+        .flatpickr-day.selected:hover,
+        .flatpickr-day.startRange:hover,
+        .flatpickr-day.endRange:hover {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+        }
+        .flatpickr-months .flatpickr-month {
+            color: var(--text) !important;
+            fill: var(--text) !important;
+        }
+        .flatpickr-current-month .numInputWrapper span.arrowUp:after {
+            border-bottom-color: var(--text) !important;
+        }
+        .flatpickr-current-month .numInputWrapper span.arrowDown:after {
+            border-top-color: var(--text) !important;
+        }
+        .flatpickr-day {
+            color: var(--text) !important;
+        }
+        .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            color: var(--text-light) !important;
+        }
+        .flatpickr-day:hover {
+            background: var(--surface2) !important;
+        }
+        .flatpickr-weekday {
+            color: var(--text-muted) !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Sidebar Overlay for Mobile -->

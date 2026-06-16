@@ -127,10 +127,12 @@ $totalGross = $l['total_price'] + $l['interest_amount'];
                 <td>File Charges</td>
                 <td style="text-align: right; color: #ef4444;">+ <?= formatINR($l['interest_amount']) ?></td>
             </tr>
+            <?php if(isSuperAdmin()): ?>
              <tr>
                 <td>Cost Price (Lagat)</td>
                 <td style="text-align: right; color: #64748b;"><?= formatINR(($l['purchased_price'] ?? 0) - $l['down_payment']) ?></td>
             </tr>
+            <?php endif; ?>
             <tr style="background: #f1f5f9;">
                 <td><strong>Total Gross Amount</strong></td>
                 <td style="text-align: right;"><strong><?= formatINR($l['total_price'] + $l['interest_amount']) ?></strong></td>
@@ -144,10 +146,12 @@ $totalGross = $l['total_price'] + $l['interest_amount'];
                 <td>Net Financed Amount (Remaining)</td>
                 <td style="text-align: right; font-size: 15px;"><?= formatINR($l['remaining_amount']) ?></td>
             </tr>
+            <?php if(isSuperAdmin()): ?>
             <tr style="background: #ecfdf5;">
                 <td><strong>Total Expected Profit</strong></td>
                 <td style="text-align: right; color: #059669;"><strong><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></strong></td>
             </tr>
+            <?php endif; ?>
             <tr>
                 <td style="font-size: 15px;"><strong>Monthly EMI Amount</strong></td>
                 <td style="text-align: right; font-size: 18px; color: #1e293b;"><strong><?= formatINR($l['emi_amount']) ?></strong></td>

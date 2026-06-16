@@ -123,14 +123,14 @@ $dueToday = $pdo->query("
             <div class="stat-label">Total Pending</div>
         </div>
     </div>
-    <?php if(isSuperAdmin() || isShopAdmin()): ?>
+    <?php if(isSuperAdmin()): ?>
     <div class="stat-card">
         <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--accent);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <div>
             <div class="stat-value text-accent"><?= formatINR($stats['expected_profit']) ?></div>
-            <div class="stat-label"><?= isSuperAdmin() ? 'Expected Total Profit' : 'Expected Profit' ?></div>
+            <div class="stat-label">Expected Total Profit</div>
         </div>
     </div>
     <div class="stat-card">
@@ -139,7 +139,7 @@ $dueToday = $pdo->query("
         </div>
         <div>
             <div class="stat-value text-success"><?= formatINR($stats['received_profit']) ?></div>
-            <div class="stat-label"><?= isSuperAdmin() ? 'Received Profit (Till Date)' : 'Received Profit' ?></div>
+            <div class="stat-label">Received Profit (Till Date)</div>
         </div>
     </div>
     <div class="stat-card">
@@ -148,7 +148,7 @@ $dueToday = $pdo->query("
         </div>
         <div>
             <div class="stat-value text-warning"><?= formatINR($stats['total_cost']) ?></div>
-            <div class="stat-label"><?= isSuperAdmin() ? 'Total Investment (Cost)' : 'Total Cost (Lagat)' ?></div>
+            <div class="stat-label">Total Investment (Cost)</div>
         </div>
     </div>
     <?php endif; ?>
