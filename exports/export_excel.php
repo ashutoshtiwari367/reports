@@ -79,30 +79,67 @@ if (!empty($start_date) && !empty($end_date)) {
 } else {
     $filename .= date('Ymd');
 }
-$filename .= ".csv";
+$filename .= ".xls";
 
 // Headers for download
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename="' . $filename . '"');
-header('Pragma: no-cache');
-header('Expires: 0');
+header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-$output = fopen('php://output', 'w');
-
-// Add BOM to fix UTF-8 in Excel
-fputs($output, $bom =(chr(0xEF) . chr(0xBB) . chr(0xBF)));
-
-if (count($loans) > 0) {
-    // Add Headers
-    fputcsv($output, array_keys($loans[0]));
-    
-    // Add Rows
-    foreach ($loans as $row) {
-        fputcsv($output, $row);
-    }
-} else {
-    fputcsv($output, ['No data found']);
-}
-
-fclose($output);
+// Output XML-compliant HTML which Excel opens directly as a formatted worksheet with gridlines
+?>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!--[if gte mso 9]><xml>
+<x:ExcelWorkbook>
+<x:ExcelWorksheets>
+<x:ExcelWorksheet>
+<x:Name>Loans Report</x:Name>
+<x:WorksheetOptions>
+<x:DisplayGridlines/>
+</x:WorksheetOptions>
+</x:ExcelWorksheet>
+</x:ExcelWorksheets>
+</x:ExcelWorkbook>
+</xml><![endif]-->
+<style>
+  table { border-collapse: collapse; }
+  th { background-color: #f2f2f2; font-weight: bold; border: 0.5pt solid #cccccc; padding: 6px; }
+  td { border: 0.5pt solid #cccccc; padding: 6px; }
+</style>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <?php if (count($loans) > 0): ?>
+                <?php foreach (array_keys($loans[0]) as $header): ?>
+                    <th><?= htmlspecialchars($header) ?></th>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <th>Result</th>
+            <?php endif; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (count($loans) > 0): ?>
+            <?php foreach ($loans as $row): ?>
+                <tr>
+                    <?php foreach ($row as $val): ?>
+                        <td><?= htmlspecialchars((string)$val) ?></td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td>No data found</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+</body>
+</html>
+<?php
 exit;
