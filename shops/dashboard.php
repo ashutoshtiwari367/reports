@@ -145,9 +145,9 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
                 
                 <div class="form-group full">
-                    <div class="flex flex-wrap gap-2" style="margin-top: 5px; width: 100%;">
-                        <!-- Filter & Reset side-by-side in one row on mobile -->
-                        <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 5px;">
+                        <!-- Row 1: Filter & Reset side-by-side -->
+                        <div style="display: flex; gap: 8px; width: 100%;">
                             <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Filter</button>
                             <a href="dashboard.php?id=<?= $id ?>" class="btn btn-outline" style="flex: 1; justify-content: center; display: inline-flex; align-items: center;">Reset</a>
                         </div>
@@ -177,8 +177,8 @@ require_once __DIR__ . '/../includes/header.php';
                         $allLoans = $stmt->fetchAll();
                         
                         if(!empty($allLoans)): ?>
-                        <!-- Excel button wraps to the next row on mobile view -->
-                        <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="flex: 1; min-width: 240px; justify-content: center; background-color: var(--success); color: white; display: inline-flex; align-items: center;">
+                        <!-- Row 2: Excel button takes its own full-width row -->
+                        <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="width: 100%; justify-content: center; background-color: var(--success); color: white; display: inline-flex; align-items: center;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             Download Excel
                         </a>
