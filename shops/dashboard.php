@@ -144,7 +144,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <input type="date" name="end_date" id="filter_end_date" value="<?= htmlspecialchars($end_date) ?>">
             </div>
             
-            <div class="flex gap-2" style="margin-top: 10px;">
+            <div class="flex flex-wrap gap-2" style="margin-top: 10px; width: 100%;">
                 <button type="submit" class="btn btn-primary">Filter</button>
                 <a href="dashboard.php?id=<?= $id ?>" class="btn btn-outline">Reset</a>
                 <?php

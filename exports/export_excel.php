@@ -45,6 +45,7 @@ $query = "
         l.interest_amount as 'Interest Amount',
         (l.total_price + l.interest_amount) as 'Total Price (with Interest)',
         l.purchased_price as 'Cost Price (Lagat)',
+        ((l.total_price - l.purchased_price) + l.interest_amount) as 'Total Expected Profit (On Full Completion)',
         l.down_payment as 'Down Payment',
         (SELECT COALESCE(SUM(emi_amount), 0) FROM emi_schedule WHERE loan_id = l.id) as 'Total EMI Amount',
         (l.down_payment + (SELECT COALESCE(SUM(paid_amount), 0) FROM emi_schedule WHERE loan_id = l.id)) as 'Total Received (Paid)',
@@ -54,7 +55,7 @@ $query = "
             NULLIF(l.total_price + l.interest_amount, 0) * 
             (l.down_payment + (SELECT COALESCE(SUM(paid_amount), 0) FROM emi_schedule WHERE loan_id = l.id)), 
             2
-        ) as 'Received Profit',
+        ) as 'Proportional Received Profit (Till Date)',
         l.emi_months as 'Total Months',
         l.status as 'Status',
         l.sale_date as 'Sale Date'

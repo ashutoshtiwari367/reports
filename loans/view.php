@@ -100,6 +100,18 @@ $progress = ($l['remaining_amount'] > 0) ? ($totalPaid / $l['remaining_amount'])
             <div class="progress-bar" style="margin-bottom: 0;">
                 <div class="progress-fill <?= $progress == 100 ? 'green' : '' ?>" style="width: <?= $progress ?>%;"></div>
             </div>
+            
+            <?php if(isSuperAdmin()): ?>
+            <div class="alert alert-success" style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--success); color: var(--text); margin-top: 20px; margin-bottom: 0; padding: 12px 18px; border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <strong style="color: var(--success); font-size: 14px;">Total Expected Profit on Completion:</strong>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">(Profit after all EMIs are successfully paid)</div>
+                    </div>
+                    <span class="text-bold text-success" style="font-size: 20px;"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></span>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
     
