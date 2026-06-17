@@ -126,57 +126,60 @@ require_once __DIR__ . '/../includes/header.php';
     
     <!-- Filter Form -->
     <div style="background: var(--surface2); padding: 20px; border-bottom: 1px solid var(--border);">
-        <form method="GET" class="flex-wrap gap-3 flex" style="align-items: flex-end;">
+        <form method="GET">
             <input type="hidden" name="id" value="<?= $id ?>">
-            
-            <div class="form-group" style="flex: 1; min-width: 150px;">
-                <label style="font-size: 11px;">Select Month</label>
-                <input type="month" name="month" id="filter_month" value="<?= htmlspecialchars($month) ?>" onchange="updateDatesFromMonth(this.value)">
-            </div>
-            
-            <div class="form-group" style="flex: 1; min-width: 150px;">
-                <label style="font-size: 11px;">Start Date</label>
-                <input type="date" name="start_date" id="filter_start_date" value="<?= htmlspecialchars($start_date) ?>">
-            </div>
-            
-            <div class="form-group" style="flex: 1; min-width: 150px;">
-                <label style="font-size: 11px;">End Date</label>
-                <input type="date" name="end_date" id="filter_end_date" value="<?= htmlspecialchars($end_date) ?>">
-            </div>
-            
-            <div class="flex flex-wrap gap-2" style="margin-top: 10px; width: 100%;">
-                <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="dashboard.php?id=<?= $id ?>" class="btn btn-outline">Reset</a>
-                <?php
-                // Query loans based on selected date filters
-                $whereClause = "WHERE l.shop_id = :shop_id";
-                $queryParams = [':shop_id' => $id];
-
-                if (!empty($start_date)) {
-                    $whereClause .= " AND l.sale_date >= :start_date";
-                    $queryParams[':start_date'] = $start_date;
-                }
-                if (!empty($end_date)) {
-                    $whereClause .= " AND l.sale_date <= :end_date";
-                    $queryParams[':end_date'] = $end_date;
-                }
-
-                $stmt = $pdo->prepare("
-                    SELECT l.*, c.name as customer_name, c.phone 
-                    FROM loans l 
-                    JOIN customers c ON l.customer_id = c.id 
-                    $whereClause
-                    ORDER BY l.created_at DESC
-                ");
-                $stmt->execute($queryParams);
-                $allLoans = $stmt->fetchAll();
+            <div class="form-grid">
+                <div class="form-group">
+                    <label style="font-size: 11px;">Select Month</label>
+                    <input type="month" name="month" id="filter_month" value="<?= htmlspecialchars($month) ?>" onchange="updateDatesFromMonth(this.value)">
+                </div>
                 
-                if(!empty($allLoans)): ?>
-                <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="background-color: var(--success); color: white;">
-                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download Excel
-                </a>
-                <?php endif; ?>
+                <div class="form-group">
+                    <label style="font-size: 11px;">Start Date</label>
+                    <input type="date" name="start_date" id="filter_start_date" value="<?= htmlspecialchars($start_date) ?>">
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-size: 11px;">End Date</label>
+                    <input type="date" name="end_date" id="filter_end_date" value="<?= htmlspecialchars($end_date) ?>">
+                </div>
+                
+                <div class="form-group full">
+                    <div class="flex flex-wrap gap-2" style="margin-top: 5px; width: 100%;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center; min-width: 100px;">Filter</button>
+                        <a href="dashboard.php?id=<?= $id ?>" class="btn btn-outline" style="flex: 1; justify-content: center; min-width: 100px; display: inline-flex; align-items: center;">Reset</a>
+                        <?php
+                        // Query loans based on selected date filters
+                        $whereClause = "WHERE l.shop_id = :shop_id";
+                        $queryParams = [':shop_id' => $id];
+
+                        if (!empty($start_date)) {
+                            $whereClause .= " AND l.sale_date >= :start_date";
+                            $queryParams[':start_date'] = $start_date;
+                        }
+                        if (!empty($end_date)) {
+                            $whereClause .= " AND l.sale_date <= :end_date";
+                            $queryParams[':end_date'] = $end_date;
+                        }
+
+                        $stmt = $pdo->prepare("
+                            SELECT l.*, c.name as customer_name, c.phone 
+                            FROM loans l 
+                            JOIN customers c ON l.customer_id = c.id 
+                            $whereClause
+                            ORDER BY l.created_at DESC
+                        ");
+                        $stmt->execute($queryParams);
+                        $allLoans = $stmt->fetchAll();
+                        
+                        if(!empty($allLoans)): ?>
+                        <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="flex: 2; justify-content: center; min-width: 180px; background-color: var(--success); color: white; display: inline-flex; align-items: center;">
+                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Excel
+                        </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
