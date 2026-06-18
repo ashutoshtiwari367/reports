@@ -23,7 +23,7 @@ if (!$shop) die('Shop not found');
 // Stats for this specific shop
 $stats = [
     'active_loans' => $pdo->query("SELECT COUNT(*) FROM loans WHERE shop_id=$id AND status='active'")->fetchColumn(),
-    'total_sales' => $pdo->query("SELECT COALESCE(SUM(total_price),0) FROM loans WHERE shop_id=$id")->fetchColumn(),
+    'total_sales' => $pdo->query("SELECT COALESCE(SUM(total_price),0) FROM loans WHERE shop_id=$id AND status != 'cancelled'")->fetchColumn(),
     'total_collection' => $pdo->query("
         SELECT COALESCE(SUM(p.amount),0) 
         FROM emi_payments p 
