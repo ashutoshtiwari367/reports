@@ -175,6 +175,10 @@ foreach ($loans as $loan) {
             border-collapse: collapse;
             margin-top: 10px;
         }
+        tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
         th {
             background-color: #6366f1;
             color: #ffffff;
