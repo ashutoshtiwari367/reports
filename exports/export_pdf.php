@@ -38,6 +38,7 @@ $query = "
         l.loan_number,
         l.sale_date,
         c.name as customer_name,
+        l.emi_months,
         l.emi_amount,
         l.purchased_price,
         l.total_price,
@@ -77,10 +78,12 @@ $filename .= ".pdf";
 $totalCost = 0;
 $totalProfit = 0;
 $totalEMI = 0;
+$totalSellPrice = 0;
 foreach ($loans as $loan) {
     $totalCost += (float)$loan['purchased_price'];
     $totalProfit += (((float)$loan['total_price'] - (float)$loan['purchased_price']) + (float)$loan['interest_amount']);
     $totalEMI += (float)$loan['emi_amount'];
+    $totalSellPrice += (float)$loan['total_price'];
 }
 ?>
 <!DOCTYPE html>
@@ -99,7 +102,7 @@ foreach ($loans as $loan) {
         }
         .report-container {
             width: 210mm;
-            padding: 15mm;
+            padding: 8mm; /* Reduced page margins */
             box-sizing: border-box;
             background: #ffffff;
             margin: 0 auto;
@@ -114,14 +117,14 @@ foreach ($loans as $loan) {
         }
         .header-left h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: #6366f1;
             letter-spacing: -0.5px;
         }
         .header-left p {
             margin: 4px 0 0 0;
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
         }
         .header-right {
@@ -129,11 +132,11 @@ foreach ($loans as $loan) {
         }
         .header-right p {
             margin: 2px 0;
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
         }
         .header-right .report-type {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #0f172a;
         }
@@ -143,23 +146,23 @@ foreach ($loans as $loan) {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .stat-card {
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px;
             background: #f8fafc;
             text-align: center;
         }
         .stat-val {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #0f172a;
             margin-top: 2px;
         }
         .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -175,17 +178,17 @@ foreach ($loans as $loan) {
         th {
             background-color: #6366f1;
             color: #ffffff;
-            font-size: 11px;
+            font-size: 9px; /* Smaller font size for header */
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 10px 8px;
+            letter-spacing: 0.3px;
+            padding: 8px 5px;
             border: 1px solid #6366f1;
             text-align: left;
         }
         td {
-            padding: 10px 8px;
-            font-size: 11.5px;
+            padding: 8px 5px;
+            font-size: 9.5px; /* Smaller font size for data */
             color: #334155;
             border: 1px solid #e2e8f0;
             vertical-align: middle;
@@ -251,7 +254,7 @@ foreach ($loans as $loan) {
             <p>Shop: <strong><?= htmlspecialchars($shopName) ?></strong></p>
         </div>
         <div class="header-right">
-            <p class="report-type">Sales & Loan Report (Portrait)</p>
+            <p class="report-type">Sales & Loan Report</p>
             <p>Duration: 
                 <strong>
                     <?php if (!empty($start_date) && !empty($end_date)): ?>
@@ -288,11 +291,13 @@ foreach ($loans as $loan) {
     <table>
         <thead>
             <tr>
-                <th style="width: 18%;">Loan No</th>
-                <th style="width: 14%; text-align: center;">Date</th>
-                <th style="width: 28%;">Customer Name</th>
-                <th style="width: 13%; text-align: right;">EMI/Month</th>
-                <th style="width: 14%; text-align: right;">Cost (Lagat)</th>
+                <th style="width: 12%;">Loan No</th>
+                <th style="width: 10%; text-align: center;">Date</th>
+                <th style="width: 20%;">Customer Name</th>
+                <th style="width: 8%; text-align: center;">Months</th>
+                <th style="width: 12%; text-align: right;">EMI/Month</th>
+                <th style="width: 12%; text-align: right;">Total Price</th>
+                <th style="width: 13%; text-align: right;">Cost (Lagat)</th>
                 <th style="width: 13%; text-align: right;">Profit</th>
             </tr>
         </thead>
@@ -306,21 +311,24 @@ foreach ($loans as $loan) {
                         <td><strong><?= htmlspecialchars($loan['loan_number']) ?></strong></td>
                         <td class="text-center"><?= formatDate($loan['sale_date']) ?></td>
                         <td><?= htmlspecialchars($loan['customer_name']) ?></td>
+                        <td class="text-center"><?= htmlspecialchars($loan['emi_months']) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['emi_amount']) ?></td>
+                        <td class="text-right"><?= formatINR((float)$loan['total_price']) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['purchased_price']) ?></td>
                         <td class="text-right" style="color: #059669; font-weight: 600;"><?= formatINR($loanProfit) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 <!-- Totals Row -->
                 <tr class="totals-row">
-                    <td colspan="3" class="text-right" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">Total</td>
+                    <td colspan="4" class="text-right" style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px;">Total</td>
                     <td class="text-right"><?= formatINR($totalEMI) ?></td>
+                    <td class="text-right"><?= formatINR($totalSellPrice) ?></td>
                     <td class="text-right"><?= formatINR($totalCost) ?></td>
                     <td class="text-right" style="color: #059669;"><?= formatINR($totalProfit) ?></td>
                 </tr>
             <?php else: ?>
                 <tr>
-                    <td colspan="6" class="text-center" style="padding: 30px; color: #64748b;">No sales records found for this period.</td>
+                    <td colspan="8" class="text-center" style="padding: 30px; color: #64748b;">No sales records found for this period.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
@@ -333,7 +341,7 @@ foreach ($loans as $loan) {
         const loader = document.getElementById('loader');
         
         const opt = {
-            margin:       0, // 0 margin to prevent right-side shifting; padding on .report-container acts as page margin
+            margin:       0, // 0 margin prevents double margin shifts
             filename:     '<?= $filename ?>',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { 
@@ -345,7 +353,7 @@ foreach ($loans as $loan) {
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
-        // Short delay to ensure browser finishes rendering styles
+        // Short delay to ensure styles are rendered
         setTimeout(() => {
             html2pdf().set(opt).from(element).save().then(() => {
                 loader.innerHTML = `
@@ -353,7 +361,6 @@ foreach ($loans as $loan) {
                     <p style="font-size: 16px; font-weight: 600; margin: 0; color: #10b981;">Report Downloaded!</p>
                     <p style="font-size: 12px; color: #64748b; margin: 5px 0 0 0;">You can close this tab now.</p>
                 `;
-                // Close the tab automatically after 1.5 seconds
                 setTimeout(() => {
                     window.close();
                 }, 1500);
