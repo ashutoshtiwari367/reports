@@ -333,7 +333,7 @@ foreach ($loans as $loan) {
         const loader = document.getElementById('loader');
         
         const opt = {
-            margin:       [10, 10, 10, 10], // 10mm margins on all sides
+            margin:       0, // 0 margin to prevent right-side shifting; padding on .report-container acts as page margin
             filename:     '<?= $filename ?>',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { 
