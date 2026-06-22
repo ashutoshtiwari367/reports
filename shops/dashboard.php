@@ -177,11 +177,17 @@ require_once __DIR__ . '/../includes/header.php';
                         $allLoans = $stmt->fetchAll();
                         
                         if(!empty($allLoans)): ?>
-                        <!-- Row 2: Excel button takes its own full-width row -->
-                        <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="width: 100%; justify-content: center; background-color: var(--success); color: white; display: inline-flex; align-items: center;">
-                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Download Excel
-                        </a>
+                        <!-- Row 2: Excel & PDF buttons side-by-side -->
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <a href="/exports/export_excel.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-success" style="flex: 1; justify-content: center; background-color: var(--success); color: white; display: inline-flex; align-items: center;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download Excel
+                            </a>
+                            <a href="/exports/export_pdf.php?shop_id=<?= $id ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" target="_blank" class="btn btn-primary" style="flex: 1; justify-content: center; background-color: var(--accent); color: white; display: inline-flex; align-items: center;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download PDF
+                            </a>
+                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
