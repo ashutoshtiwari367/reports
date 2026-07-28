@@ -171,7 +171,7 @@ require_once __DIR__ . '/../includes/header.php';
                             FROM loans l 
                             JOIN customers c ON l.customer_id = c.id 
                             $whereClause
-                            ORDER BY l.sale_date ASC, l.created_at ASC
+                            ORDER BY l.sale_date DESC, l.created_at DESC
                         ");
                         $stmt->execute($queryParams);
                         $allLoans = $stmt->fetchAll();

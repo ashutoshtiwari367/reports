@@ -11,7 +11,7 @@ $loans = $pdo->query("
     JOIN shops s ON l.shop_id = s.id
     JOIN customers c ON l.customer_id = c.id
     $where
-    ORDER BY l.sale_date ASC, l.created_at ASC
+    ORDER BY l.sale_date DESC, l.created_at DESC
 ")->fetchAll();
 ?>
 
