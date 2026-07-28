@@ -17,15 +17,36 @@ if ($id > 0) {
     try {
         $pdo->beginTransaction();
 
-        // 1. Get customer_id before deleting loan
-        $stmt = $pdo->prepare("SELECT customer_id FROM loans WHERE id = ?");
+        // 1. Get customer_id and customer photos before deleting loan
+        $stmt = $pdo->prepare("
+            SELECT l.customer_id, c.customer_photo, c.aadhaar_photo, c.aadhaar_back_photo 
+            FROM loans l 
+            JOIN customers c ON l.customer_id = c.id 
+            WHERE l.id = ?
+        ");
         $stmt->execute([$id]);
         $loanData = $stmt->fetch();
         
         if ($loanData) {
             $custId = $loanData['customer_id'];
             
-            // 2. Delete the loan
+            // 2. Find all EMI IDs for this loan to manually delete payments
+            $emiStmt = $pdo->prepare("SELECT id FROM emi_schedule WHERE loan_id = ?");
+            $emiStmt->execute([$id]);
+            $emiIds = $emiStmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            if (!empty($emiIds)) {
+                $inQuery = implode(',', array_fill(0, count($emiIds), '?'));
+                // Delete associated payments
+                $stmt = $pdo->prepare("DELETE FROM emi_payments WHERE emi_id IN ($inQuery)");
+                $stmt->execute($emiIds);
+            }
+            
+            // Delete associated EMI schedule
+            $stmt = $pdo->prepare("DELETE FROM emi_schedule WHERE loan_id = ?");
+            $stmt->execute([$id]);
+
+            // Delete the loan itself
             $stmt = $pdo->prepare("DELETE FROM loans WHERE id = ?");
             $stmt->execute([$id]);
             
@@ -35,13 +56,23 @@ if ($id > 0) {
             $remainingLoans = (int)$check->fetchColumn();
             
             if ($remainingLoans === 0) {
-                // 4. Delete the customer if no loans are left
+                // 4. Delete customer photo files from disk if they exist
+                foreach (['customer_photo', 'aadhaar_photo', 'aadhaar_back_photo'] as $key) {
+                    if (!empty($loanData[$key])) {
+                        $filePath = __DIR__ . '/../' . $loanData[$key];
+                        if (file_exists($filePath)) {
+                            @unlink($filePath);
+                        }
+                    }
+                }
+                
+                // Delete the customer record
                 $pdo->prepare("DELETE FROM customers WHERE id = ?")->execute([$custId]);
             }
         }
 
         $pdo->commit();
-        setFlash('success', 'Loan and associated customer (if no other loans) deleted successfully.');
+        setFlash('success', 'Loan, associated payments/schedule, and customer (if no other loans left) deleted successfully.');
     } catch (Exception $e) {
         if ($pdo->inTransaction()) $pdo->rollBack();
         setFlash('error', 'Could not delete: ' . $e->getMessage());

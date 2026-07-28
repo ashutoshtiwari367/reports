@@ -11,7 +11,7 @@ $loans = $pdo->query("
     JOIN shops s ON l.shop_id = s.id
     JOIN customers c ON l.customer_id = c.id
     $where
-    ORDER BY l.created_at DESC
+    ORDER BY l.sale_date ASC, l.created_at ASC
 ")->fetchAll();
 ?>
 
@@ -45,7 +45,19 @@ $loans = $pdo->query("
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($loans as $l): ?>
+                <?php 
+                $currentMonthYear = '';
+                foreach($loans as $l): 
+                    $monthYear = date('F Y', strtotime($l['sale_date']));
+                    if ($monthYear !== $currentMonthYear):
+                        $currentMonthYear = $monthYear;
+                ?>
+                <tr class="month-group-row" style="background: rgba(99, 102, 241, 0.08); font-weight: bold;">
+                    <td colspan="8" style="color: var(--accent); padding: 12px 15px; font-size: 14px; text-align: left; border-left: 4px solid var(--accent);">
+                        <?= htmlspecialchars($currentMonthYear) ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
                 <tr>
                     <td><strong><?= htmlspecialchars($l['loan_number']) ?></strong></td>
                     <td>

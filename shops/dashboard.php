@@ -171,7 +171,7 @@ require_once __DIR__ . '/../includes/header.php';
                             FROM loans l 
                             JOIN customers c ON l.customer_id = c.id 
                             $whereClause
-                            ORDER BY l.created_at DESC
+                            ORDER BY l.sale_date ASC, l.created_at ASC
                         ");
                         $stmt->execute($queryParams);
                         $allLoans = $stmt->fetchAll();
@@ -209,7 +209,19 @@ require_once __DIR__ . '/../includes/header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($allLoans as $loan): ?>
+                    <?php 
+                    $currentMonthYear = '';
+                    foreach($allLoans as $loan): 
+                        $monthYear = date('F Y', strtotime($loan['sale_date']));
+                        if ($monthYear !== $currentMonthYear):
+                            $currentMonthYear = $monthYear;
+                    ?>
+                    <tr class="month-group-row" style="background: rgba(99, 102, 241, 0.08); font-weight: bold;">
+                        <td colspan="7" style="color: var(--accent); padding: 12px 15px; font-size: 14px; text-align: left; border-left: 4px solid var(--accent);">
+                            <?= htmlspecialchars($currentMonthYear) ?>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
                     <tr>
                         <td><strong><a href="/loans/view.php?id=<?= $loan['id'] ?>" style="color:var(--accent)"><?= htmlspecialchars($loan['loan_number']) ?></a></strong></td>
                         <td>

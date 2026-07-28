@@ -10,7 +10,7 @@ $start_date = $_GET['start_date'] ?? '';
 $end_date = $_GET['end_date'] ?? '';
 
 // Build dynamic WHERE section
-$whereClauses = [];
+$whereClauses = ["l.status != 'cancelled'"];
 $params = [];
 
 if ($shop_id > 0) {

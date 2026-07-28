@@ -8,7 +8,9 @@ if(!empty($_GET['month'])) $month = $_GET['month'];
 $collections = $pdo->prepare("
     SELECT p.payment_mode, SUM(p.amount) as total, COUNT(p.id) as count
     FROM emi_payments p
-    WHERE DATE_FORMAT(p.payment_date, '%Y-%m') = ?
+    JOIN emi_schedule e ON p.emi_id = e.id
+    JOIN loans l ON e.loan_id = l.id
+    WHERE DATE_FORMAT(p.payment_date, '%Y-%m') = ? AND l.status != 'cancelled'
     GROUP BY p.payment_mode
 ");
 $collections->execute([$month]);

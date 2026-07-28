@@ -9,7 +9,7 @@ $due = $pdo->query("
     JOIN loans l ON e.loan_id = l.id
     JOIN customers c ON l.customer_id = c.id
     JOIN shops s ON l.shop_id = s.id
-    WHERE e.due_date = '$today' AND e.status IN ('due', 'partial')
+    WHERE e.due_date = '$today' AND e.status IN ('due', 'partial') AND l.status != 'cancelled'
     ORDER BY s.name ASC, c.name ASC
 ")->fetchAll();
 ?>

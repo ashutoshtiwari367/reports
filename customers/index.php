@@ -7,7 +7,7 @@ $where = isShopAdmin() ? "WHERE c.shop_id = " . (int)$shop_id : "";
 
 $customers = $pdo->query("
     SELECT c.*, 
-    (SELECT COUNT(*) FROM loans WHERE customer_id = c.id) as total_loans,
+    (SELECT COUNT(*) FROM loans WHERE customer_id = c.id AND status != 'cancelled') as total_loans,
     (SELECT COUNT(*) FROM loans WHERE customer_id = c.id AND status='active') as active_loans
     FROM customers c 
     $where
