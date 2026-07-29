@@ -3,13 +3,21 @@ require_once __DIR__ . '/../includes/header.php';
 global $pdo;
 
 $today = date('Y-m-d');
+
+// RBAC: Shop Admin only sees their own shop's dues
+$shopJoinFilter = '';
+if (isShopAdmin()) {
+    $sid = (int)getShopId();
+    $shopJoinFilter = "AND l.shop_id = $sid";
+}
+
 $due = $pdo->query("
     SELECT e.*, l.loan_number, c.name as customer_name, c.phone, s.name as shop_name 
     FROM emi_schedule e
     JOIN loans l ON e.loan_id = l.id
     JOIN customers c ON l.customer_id = c.id
     JOIN shops s ON l.shop_id = s.id
-    WHERE e.due_date = '$today' AND e.status IN ('due', 'partial') AND l.status != 'cancelled'
+    WHERE e.due_date = '$today' AND e.status IN ('due', 'partial') AND l.status != 'cancelled' $shopJoinFilter
     ORDER BY s.name ASC, c.name ASC
 ")->fetchAll();
 ?>

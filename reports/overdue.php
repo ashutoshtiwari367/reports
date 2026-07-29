@@ -3,6 +3,14 @@ require_once __DIR__ . '/../includes/header.php';
 global $pdo;
 
 $today = date('Y-m-d');
+
+// RBAC: Shop Admin only sees their own shop's overdue EMIs
+$shopJoinFilter = '';
+if (isShopAdmin()) {
+    $sid = (int)getShopId();
+    $shopJoinFilter = "AND l.shop_id = $sid";
+}
+
 // Note: We use due_date < today AND status='due' rather than rely only on the 'overdue' status word,
 // as the status column may not be fully synchronized by cron job yet (since we are doing a manual tracking SaaS without background triggers).
 $overdue = $pdo->query("
@@ -12,7 +20,7 @@ $overdue = $pdo->query("
     JOIN loans l ON e.loan_id = l.id
     JOIN customers c ON l.customer_id = c.id
     JOIN shops s ON l.shop_id = s.id
-    WHERE e.due_date < '$today' AND e.status IN ('due', 'partial') AND l.status != 'cancelled'
+    WHERE e.due_date < '$today' AND e.status IN ('due', 'partial') AND l.status != 'cancelled' $shopJoinFilter
     ORDER BY e.due_date ASC
 ")->fetchAll();
 ?>

@@ -5,12 +5,19 @@ global $pdo;
 $month = date('Y-m');
 if(!empty($_GET['month'])) $month = $_GET['month'];
 
+// RBAC: Shop Admin only sees their own shop's monthly collection
+$shopJoinFilter = '';
+if (isShopAdmin()) {
+    $sid = (int)getShopId();
+    $shopJoinFilter = "AND l.shop_id = $sid";
+}
+
 $collections = $pdo->prepare("
     SELECT p.payment_mode, SUM(p.amount) as total, COUNT(p.id) as count
     FROM emi_payments p
     JOIN emi_schedule e ON p.emi_id = e.id
     JOIN loans l ON e.loan_id = l.id
-    WHERE DATE_FORMAT(p.payment_date, '%Y-%m') = ? AND l.status != 'cancelled'
+    WHERE DATE_FORMAT(p.payment_date, '%Y-%m') = ? AND l.status != 'cancelled' $shopJoinFilter
     GROUP BY p.payment_mode
 ");
 $collections->execute([$month]);
