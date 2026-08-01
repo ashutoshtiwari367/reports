@@ -41,6 +41,7 @@ $query = "
         l.emi_months,
         l.emi_amount,
         l.purchased_price,
+        l.down_payment,
         l.total_price,
         l.interest_amount
     FROM loans l
@@ -80,7 +81,9 @@ $totalProfit = 0;
 $totalEMI = 0;
 $totalSellPrice = 0;
 foreach ($loans as $loan) {
-    $totalCost += (float)$loan['purchased_price'];
+    // Net lagat = purchased_price - down_payment (dashboard ke formula ke anusaar)
+    $netLagat = (float)$loan['purchased_price'] - (float)$loan['down_payment'];
+    $totalCost += $netLagat;
     $totalProfit += (((float)$loan['total_price'] - (float)$loan['purchased_price']) + (float)$loan['interest_amount']);
     $totalEMI += (float)$loan['emi_amount'];
     $totalSellPrice += (float)$loan['total_price'];
@@ -309,6 +312,8 @@ foreach ($loans as $loan) {
             <?php if (count($loans) > 0): ?>
                 <?php foreach ($loans as $loan): ?>
                     <?php 
+                        // Net lagat = purchased_price - down_payment (dashboard ke formula ke anusaar)
+                        $netLagat = (float)$loan['purchased_price'] - (float)$loan['down_payment'];
                         $loanProfit = (((float)$loan['total_price'] - (float)$loan['purchased_price']) + (float)$loan['interest_amount']);
                     ?>
                     <tr>
@@ -318,7 +323,7 @@ foreach ($loans as $loan) {
                         <td class="text-center"><?= htmlspecialchars($loan['emi_months']) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['emi_amount']) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['total_price']) ?></td>
-                        <td class="text-right"><?= formatINR((float)$loan['purchased_price']) ?></td>
+                        <td class="text-right"><?= formatINR($netLagat) ?></td>
                         <td class="text-right" style="color: #059669; font-weight: 600;"><?= formatINR($loanProfit) ?></td>
                     </tr>
                 <?php endforeach; ?>
