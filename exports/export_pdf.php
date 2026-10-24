@@ -79,6 +79,7 @@ $filename .= ".pdf";
 $totalCost = 0;
 $totalProfit = 0;
 $totalEMI = 0;
+$totalCalculatedEMI = 0;
 $totalSellPrice = 0;
 foreach ($loans as $loan) {
     // Net lagat = purchased_price - down_payment (dashboard ke formula ke anusaar)
@@ -86,6 +87,7 @@ foreach ($loans as $loan) {
     $totalCost += $netLagat;
     $totalProfit += (((float)$loan['total_price'] - (float)$loan['purchased_price']) + (float)$loan['interest_amount']);
     $totalEMI += (float)$loan['emi_amount'];
+    $totalCalculatedEMI += ((float)$loan['emi_months'] * (float)$loan['emi_amount']);
     $totalSellPrice += (float)$loan['total_price'];
 }
 ?>
@@ -185,17 +187,17 @@ foreach ($loans as $loan) {
         th {
             background-color: #6366f1;
             color: #ffffff;
-            font-size: 9px; /* Smaller font size for header */
+            font-size: 8.5px; /* Smaller font size for header */
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            padding: 8px 5px;
+            letter-spacing: 0.2px;
+            padding: 7px 4px;
             border: 1px solid #6366f1;
             text-align: left;
         }
         td {
-            padding: 8px 5px;
-            font-size: 9.5px; /* Smaller font size for data */
+            padding: 7px 4px;
+            font-size: 9px; /* Smaller font size for data */
             color: #334155;
             border: 1px solid #e2e8f0;
             vertical-align: middle;
@@ -298,14 +300,15 @@ foreach ($loans as $loan) {
     <table>
         <thead>
             <tr>
-                <th style="width: 12%;">Loan No</th>
-                <th style="width: 10%; text-align: center;">Date</th>
-                <th style="width: 20%;">Customer Name</th>
-                <th style="width: 8%; text-align: center;">Months</th>
-                <th style="width: 12%; text-align: right;">EMI/Month</th>
-                <th style="width: 12%; text-align: right;">Total Price</th>
-                <th style="width: 13%; text-align: right;">Cost (Lagat)</th>
-                <th style="width: 13%; text-align: right;">Profit</th>
+                <th style="width: 11%;">Loan No</th>
+                <th style="width: 9%; text-align: center;">Date</th>
+                <th style="width: 17%;">Customer Name</th>
+                <th style="width: 6%; text-align: center;">Months</th>
+                <th style="width: 10%; text-align: right;">EMI/Month</th>
+                <th style="width: 11%; text-align: right;">Total EMI</th>
+                <th style="width: 11%; text-align: right;">Total Price</th>
+                <th style="width: 11%; text-align: right;">Cost (Lagat)</th>
+                <th style="width: 14%; text-align: right;">Profit</th>
             </tr>
         </thead>
         <tbody>
@@ -315,6 +318,7 @@ foreach ($loans as $loan) {
                         // Net lagat = purchased_price - down_payment (dashboard ke formula ke anusaar)
                         $netLagat = (float)$loan['purchased_price'] - (float)$loan['down_payment'];
                         $loanProfit = (((float)$loan['total_price'] - (float)$loan['purchased_price']) + (float)$loan['interest_amount']);
+                        $calculatedEMI = (float)$loan['emi_months'] * (float)$loan['emi_amount'];
                     ?>
                     <tr>
                         <td><strong><?= htmlspecialchars($loan['loan_number']) ?></strong></td>
@@ -322,6 +326,7 @@ foreach ($loans as $loan) {
                         <td><?= htmlspecialchars($loan['customer_name']) ?></td>
                         <td class="text-center"><?= htmlspecialchars($loan['emi_months']) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['emi_amount']) ?></td>
+                        <td class="text-right" style="font-weight: 600; color: #4f46e5;"><?= formatINR($calculatedEMI) ?></td>
                         <td class="text-right"><?= formatINR((float)$loan['total_price']) ?></td>
                         <td class="text-right"><?= formatINR($netLagat) ?></td>
                         <td class="text-right" style="color: #059669; font-weight: 600;"><?= formatINR($loanProfit) ?></td>
@@ -331,13 +336,14 @@ foreach ($loans as $loan) {
                 <tr class="totals-row">
                     <td colspan="4" class="text-right" style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px;">Total</td>
                     <td class="text-right"><?= formatINR($totalEMI) ?></td>
+                    <td class="text-right" style="color: #4f46e5;"><?= formatINR($totalCalculatedEMI) ?></td>
                     <td class="text-right"><?= formatINR($totalSellPrice) ?></td>
                     <td class="text-right"><?= formatINR($totalCost) ?></td>
                     <td class="text-right" style="color: #059669;"><?= formatINR($totalProfit) ?></td>
                 </tr>
             <?php else: ?>
                 <tr>
-                    <td colspan="8" class="text-center" style="padding: 30px; color: #64748b;">No sales records found for this period.</td>
+                    <td colspan="9" class="text-center" style="padding: 30px; color: #64748b;">No sales records found for this period.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

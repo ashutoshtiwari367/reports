@@ -37,9 +37,13 @@ if (count($whereClauses) > 0) {
 $query = "
     SELECT 
         l.loan_number as 'Loan No',
+        l.sale_date as 'Sale Date',
         c.name as 'Customer Name',
         c.phone as 'Phone',
         l.item_name as 'Item',
+        l.emi_months as 'Months',
+        l.emi_amount as 'EMI / Month',
+        (l.emi_months * l.emi_amount) as 'Total EMI (Months x EMI)',
         l.total_price as 'Sell Price',
         l.interest_amount as 'Interest Amount',
         (l.total_price + l.interest_amount) as 'Total Price (with Interest)',
@@ -49,7 +53,7 @@ $query = "
     FROM loans l
     JOIN customers c ON l.customer_id = c.id
     $whereSection
-    ORDER BY l.created_at DESC
+    ORDER BY l.sale_date DESC, l.created_at DESC
 ";
 
 $stmt = $pdo->prepare($query);

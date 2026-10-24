@@ -69,7 +69,10 @@ $loans = $pdo->query("
                         <?= formatINR($l['total_price']) ?><br>
                         <small class="text-muted">Bal: <?= formatINR($l['remaining_amount']) ?></small>
                     </td>
-                    <td><?= $l['emi_months'] ?> mo × <?= formatINR($l['emi_amount']) ?></td>
+                    <td>
+                        <?= $l['emi_months'] ?> mo × <?= formatINR($l['emi_amount']) ?><br>
+                        <small style="color:var(--accent); font-weight:600;">Total: <?= formatINR((float)$l['emi_months'] * (float)$l['emi_amount']) ?></small>
+                    </td>
                     <td style="color:var(--success); font-weight:600;"><?= formatINR(($l['total_price'] - ($l['purchased_price'] ?? 0)) + $l['interest_amount']) ?></td>
                     <td><?= statusBadge($l['status']) ?></td>
                     <td class="text-right flex gap-2" style="justify-content: flex-end;">

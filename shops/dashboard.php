@@ -177,11 +177,17 @@ require_once __DIR__ . '/../includes/header.php';
                         $allLoans = $stmt->fetchAll();
                         
                         if(!empty($allLoans)): ?>
-                        <!-- Row 2: Download PDF button takes its own full-width row -->
-                        <a href="#" onclick="downloadPDF(event)" class="btn btn-primary" style="width: 100%; justify-content: center; background-color: var(--accent); color: white; display: inline-flex; align-items: center;">
-                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Download PDF
-                        </a>
+                        <!-- Row 2: Download PDF & Excel buttons -->
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <a href="#" onclick="downloadPDF(event)" class="btn btn-primary" style="flex: 1; justify-content: center; background-color: var(--accent); color: white; display: inline-flex; align-items: center;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download PDF
+                            </a>
+                            <a href="#" onclick="downloadExcel(event)" class="btn btn-outline" style="flex: 1; justify-content: center; display: inline-flex; align-items: center;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 5px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                Download Excel
+                            </a>
+                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -204,6 +210,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <th>Item / Model</th>
                         <th>Price</th>
                         <th>Months</th>
+                        <th>Total EMI</th>
                         <th>Status</th>
                         <th class="text-right">Action</th>
                     </tr>
@@ -217,7 +224,7 @@ require_once __DIR__ . '/../includes/header.php';
                             $currentMonthYear = $monthYear;
                     ?>
                     <tr class="month-group-row" style="background: rgba(99, 102, 241, 0.08); font-weight: bold;">
-                        <td colspan="7" style="color: var(--accent); padding: 12px 15px; font-size: 14px; text-align: left; border-left: 4px solid var(--accent);">
+                        <td colspan="8" style="color: var(--accent); padding: 12px 15px; font-size: 14px; text-align: left; border-left: 4px solid var(--accent);">
                             <?= htmlspecialchars($currentMonthYear) ?>
                         </td>
                     </tr>
@@ -237,6 +244,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <small class="text-muted">Bal: <?= formatINR($loan['remaining_amount']) ?></small>
                         </td>
                         <td><?= $loan['emi_months'] ?> mo × <?= formatINR($loan['emi_amount']) ?></td>
+                        <td class="text-bold" style="color:var(--accent);"><?= formatINR((float)$loan['emi_months'] * (float)$loan['emi_amount']) ?></td>
                         <td><?= statusBadge($loan['status']) ?></td>
                         <td class="text-right">
                             <a href="/loans/view.php?id=<?= $loan['id'] ?>" class="btn btn-sm btn-outline">View</a>
@@ -292,6 +300,15 @@ function downloadPDF(e) {
     const shopId = <?= $id ?>;
     const url = `/exports/export_pdf.php?shop_id=${shopId}&start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`;
     window.open(url, '_blank');
+}
+
+function downloadExcel(e) {
+    e.preventDefault();
+    const start = document.getElementById('filter_start_date').value;
+    const end = document.getElementById('filter_end_date').value;
+    const shopId = <?= $id ?>;
+    const url = `/exports/export_excel.php?shop_id=${shopId}&start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`;
+    window.location.href = url;
 }
 </script>
 
